@@ -104,6 +104,7 @@ GEM
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
     ffi (1.17.2-x64-mingw-ucrt)
+    ffi (1.17.2-x86_64-linux-gnu)
     globalid (1.3.0)
       activesupport (>= 6.1)
     httparty (0.23.2)
@@ -154,6 +155,8 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.10-x64-mingw-ucrt)
       racc (~> 1.4)
+    nokogiri (1.18.10-x86_64-linux-gnu)
+      racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (9.4.0)
     parallel (1.27.0)
@@ -161,6 +164,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.6.2-x64-mingw-ucrt)
+    pg (1.6.2-x86_64-linux)
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -227,7 +231,6 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
-    redis (4.8.1)
     regexp_parser (2.11.3)
     reline (0.6.2)
       io-console (~> 0.5)
@@ -286,10 +289,6 @@ GEM
       rubyzip (>= 1.2.2)
     shoulda-matchers (6.5.0)
       activesupport (>= 5.2.0)
-    sidekiq (6.5.12)
-      connection_pool (>= 2.2.5, < 3)
-      rack (~> 2.0)
-      redis (>= 4.5.0, < 5)
     spring (4.4.0)
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
@@ -330,6 +329,7 @@ GEM
 
 PLATFORMS
   x64-mingw-ucrt
+  x86_64-linux
 
 DEPENDENCIES
   devise
@@ -345,12 +345,10 @@ DEPENDENCIES
   pundit
   pundit-matchers (~> 3.1)
   rails (~> 7.0)
-  redis (~> 4.0)
   rspec-rails
   rubocop
   sassc-rails
   shoulda-matchers (~> 6.0)
-  sidekiq (~> 6.5)
   spring
   spring-watcher-listen
   sprockets-rails
