@@ -70,8 +70,8 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  # Store files on Amazon S3.
-  config.active_storage.service = :amazon
+  # Store files locally (pode mudar para S3 depois se precisar)
+  config.active_storage.service = :local
 
   # Devise mailer configuration - set your production host
   config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'cinelog.com'), protocol: 'https' }
