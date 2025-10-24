@@ -22,7 +22,7 @@ module Cinelog
     config.i18n.default_locale = :'pt-BR'
     config.i18n.available_locales = [:'pt-BR']
     
-    # Configurar Sidekiq como adapter para ActiveJob
-    config.active_job.queue_adapter = :sidekiq
+    # Usar async adapter (funciona sem Redis)
+    config.active_job.queue_adapter = :async
   end
 end
