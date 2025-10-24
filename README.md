@@ -398,28 +398,6 @@ Vingadores Ultimato,2019,Russo Brothers,Ação,Os heróis remanescentes...,1,299
 
 ## 🚀 Deploy para Produção
 
-### **Opções de Deployment:**
-
-O projeto está pronto para deploy em diversas plataformas. Veja guias completos:
-
-1. **DigitalOcean App Platform** (Recomendado)
-   - Ver: `DEPLOY_DIGITALOCEAN.md`
-   - Custo: ~$40/mês
-   - Inclui: PostgreSQL, Redis, SSL automático
-   - Dificuldade: ⭐ Fácil
-
-2. **Dokku (PaaS Self-Hosted)**
-   - Ver: `DEPLOY_DIGITALOCEAN.md` seção Dokku
-   - Custo: ~$6-20/mês
-   - Requer: Droplet + configuração Dokku
-   - Dificuldade: ⭐⭐ Intermediário
-
-3. **Droplet Manual**
-   - Ver: `DEPLOY_DIGITALOCEAN.md` seção Manual
-   - Custo: ~$12/mês
-   - Controle total do servidor
-   - Dificuldade: ⭐⭐⭐ Avançado
-
 ### **Requisitos de Produção:**
 - PostgreSQL database (managed ou self-hosted)
 - Redis 4+ (para Sidekiq)
