@@ -1,0 +1,61 @@
+<!-- Carrossel de Filmes em Destaque - Design Moderno -->
+<div class="destaque-section">
+  <div class="destaque-header">
+    <i class="fa fa-star"></i>
+    <h2>Filmes em Destaque</h2>
+    <div class="destaque-divider"></div>
+  </div>
+  
+  <div class="carousel-wrapper">
+    <button class="carousel-btn carousel-prev" aria-label="Anterior">
+      <i class="fa fa-chevron-left"></i>
+    </button>
+    
+    <div class="carousel-filmes">
+      <% @filmes_destaque.each do |filme| %>
+        <div class="carousel-item">
+          <div class="destaque-card">
+            <%= link_to filme_path(filme), class: 'destaque-card-link' do %>
+              <div class="destaque-poster">
+                <% if filme.poster.attached? %>
+                  <%= image_tag filme.poster, class: 'destaque-poster-img', alt: exibir_titulo(filme) %>
+                <% else %>
+                  <div class="destaque-poster-placeholder">
+                    <i class="fa fa-film"></i>
+                    <p>Sem imagem</p>
+                  </div>
+                <% end %>
+                <div class="destaque-overlay">
+                  <i class="fa fa-play-circle"></i>
+                </div>
+              </div>
+              
+              <div class="destaque-info">
+                <h4 class="destaque-title">
+                  <%= truncate(exibir_titulo(filme), length: 30) %>
+                </h4>
+                
+                <div class="destaque-meta">
+                  <% if filme.ano_lancamento.present? %>
+                    <span class="destaque-meta-item">
+                      <i class="fa fa-calendar"></i> <%= filme.ano_lancamento %>
+                    </span>
+                  <% end %>
+                  <% if filme.duracao_minutos.present? %>
+                    <span class="destaque-meta-item">
+                      <i class="fa fa-clock-o"></i> <%= filme.duracao_minutos %> min
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    
+    <button class="carousel-btn carousel-next" aria-label="Próximo">
+      <i class="fa fa-chevron-right"></i>
+    </button>
+  </div>
+</div>

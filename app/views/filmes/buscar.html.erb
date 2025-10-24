@@ -1,0 +1,128 @@
+<!-- Page Container com W3.CSS -->
+<div class="w3-container w3-content" style="max-width:1400px; margin-top:20px; margin-bottom:80px;">
+  
+  <!-- Título da Página -->
+  <div class="w3-center" style="margin-bottom: 32px;">
+    <h1 class="w3-text-theme" style="font-size: 2.5rem;">
+      <i class="fa fa-search"></i> Resultados da Busca
+    </h1>
+  </div>
+
+  <!-- Barra de Busca -->
+  <div class="w3-card w3-round w3-white" style="margin-bottom: 32px;">
+    <div class="w3-container w3-padding">
+      <%= form_with url: buscar_filmes_path, method: :get, local: true, class: "w3-container" do |f| %>
+        <div class="w3-row-padding" style="margin: 0 -8px;">
+          <div class="w3-col m10 l10">
+            <%= f.text_field :q, 
+                value: @query, 
+                placeholder: "Buscar por título, sinopse ou diretor...", 
+                class: 'w3-input w3-border w3-round', 
+                style: 'padding: 12px;' %>
+          </div>
+          <div class="w3-col m2 l2">
+            <%= f.submit "Buscar", 
+                class: 'w3-button w3-theme w3-round', 
+                style: 'width: 100%; padding: 12px;' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Informações da Busca -->
+  <% if @query.present? %>
+    <div class="w3-panel <%= @pagy && @pagy.count > 0 ? 'w3-pale-blue' : 'w3-pale-yellow' %> w3-round" style="padding: 16px; margin-bottom: 24px;">
+      <p style="margin: 0; text-align: center; font-size: 1.1rem;">
+        <% if @pagy && @pagy.count > 0 %>
+          <i class="fa fa-check-circle w3-text-green"></i>
+          <%= "Encontrado(s) #{@pagy.count} resultado(s)" %> 
+          <%= "para" %> "<strong><%= @query %></strong>"
+        <% else %>
+          <i class="fa fa-info-circle w3-text-orange"></i>
+          <%= "Nenhum resultado encontrado" %> 
+          <%= "para" %> "<strong><%= @query %></strong>". 
+          <%= "Tente outros termos." %>
+        <% end %>
+      </p>
+    </div>
+  <% end %>
+
+  <!-- Grid de Resultados -->
+  <div class="w3-row-padding">
+    <% if @filmes.any? %>
+      <% @filmes.each do |filme| %>
+        <div class="w3-col s12 m6 w3-margin-bottom">
+          <div class="w3-card w3-round w3-white w3-hover-shadow" style="overflow: hidden;">
+            <%= link_to filme_path(filme), style: 'text-decoration: none; color: inherit;' do %>
+              <% if filme.poster.attached? %>
+                <%= image_tag filme.poster, 
+                    style: 'width: 100%; height: 500px; object-fit: cover; display: block;', 
+                    alt: exibir_titulo(filme) %>
+              <% else %>
+              <div style="height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);">
+                <i class="fa fa-film" style="font-size: 6rem; color: #bbb; margin-bottom: 24px;"></i>
+                <p style="color: #999; margin: 0; font-size: 1.3rem; font-weight: 500;">Sem imagem</p>
+              </div>
+              <% end %>
+            <% end %>
+            
+            <div class="w3-container" style="padding: 28px;">
+              <h3 class="w3-text-theme" style="margin: 0 0 20px 0; font-size: 1.8rem; font-weight: 700; line-height: 1.3;">
+                <%= link_to exibir_titulo(filme), filme_path(filme), 
+                    style: 'text-decoration: none; color: inherit;' %>
+              </h3>
+              
+              <% sinopse = exibir_sinopse(filme) %>
+              <% if sinopse.present? %>
+                <p class="w3-text-grey" style="font-size: 1.1rem; margin: 0 0 20px 0; line-height: 1.7;">
+                  <%= truncate(sinopse, length: 200) %>
+                </p>
+              <% end %>
+              
+              <div style="border-top: 2px solid #eee; padding-top: 16px; margin-bottom: 20px;">
+              <% if filme.diretor.present? %>
+                <p style="margin: 0 0 12px 0; font-size: 1.05rem; color: #555;">
+                  <i class="fa fa-user w3-text-theme" style="font-size: 1.2rem;"></i> 
+                  <strong>Diretor:</strong> 
+                  <%= filme.diretor %>
+                </p>
+              <% end %>
+                <p style="margin: 0; font-size: 1.05rem; color: #555;">
+                  <% if filme.ano_lancamento.present? %>
+                    <i class="fa fa-calendar w3-text-theme" style="font-size: 1.2rem;"></i> <%= filme.ano_lancamento %>
+                  <% end %>
+                  <% if filme.duracao_minutos.present? %>
+                    <span style="margin-left: 20px;">
+                      <i class="fa fa-clock-o w3-text-theme" style="font-size: 1.2rem;"></i> <%= filme.duracao_minutos %> min
+                    </span>
+                  <% end %>
+                </p>
+              </div>
+              
+            <%= link_to filme_path(filme), 
+                class: 'w3-button w3-theme w3-round w3-block w3-hover-shadow', 
+                style: 'padding: 16px; font-size: 1.15rem; font-weight: 600;' do %>
+              <i class="fa fa-eye" style="margin-right: 8px;"></i>Ver detalhes
+            <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% elsif @query.blank? %>
+      <div class="w3-col m12">
+        <div class="w3-panel w3-pale-blue w3-round w3-center" style="padding: 48px;">
+          <i class="fa fa-search" style="font-size: 4rem; color: #2196F3; margin-bottom: 16px;"></i>
+          <h3 style="margin: 0;"><%= "Use a barra de busca acima para encontrar filmes" %></h3>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Paginação -->
+  <% if @pagy %>
+    <div class="w3-center w3-margin-top w3-margin-bottom">
+      <%== pagy_nav(@pagy) %>
+    </div>
+  <% end %>
+</div>

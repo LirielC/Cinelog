@@ -1,0 +1,27 @@
+Olá <%= @usuario.nome %>,
+
+Sua importação de filmes foi concluída com sucesso!
+
+📊 RESUMO DA IMPORTAÇÃO
+========================
+
+Total de linhas processadas: <%= @importacao.total_linhas %>
+Filmes criados com sucesso: <%= @importacao.criados %>
+<% if @importacao.falhas > 0 %>
+Falhas: <%= @importacao.falhas %>
+<% end %>
+Data/Hora: <%= l(@importacao.updated_at, format: :long) %>
+
+<% if @importacao.falhas > 0 && @importacao.erros.present? %>
+
+⚠️ ERROS ENCONTRADOS:
+========================
+<%= @importacao.erros %>
+
+<% end %>
+
+Acesse o Cinelog para ver seus filmes: <%= Rails.application.routes.url_helpers.root_url %>
+
+---
+Este é um e-mail automático do sistema Cinelog.
+Se você não solicitou esta importação, entre em contato conosco.

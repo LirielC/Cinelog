@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #1976d2;
+      margin-bottom: 20px;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1976d2;
+    }
+    h1 {
+      color: #1976d2;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: #1976d2;
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🎬 Cinelog</div>
+    </div>
+    
+    <h1>Bem-vindo ao Cinelog!</h1>
+    
+    <p>Olá <strong><%= @email %></strong>!</p>
+    
+    <p>Obrigado por se cadastrar no Cinelog, seu catálogo pessoal de filmes!</p>
+    
+    <p>Para começar a usar sua conta, confirme seu endereço de e-mail clicando no botão abaixo:</p>
+    
+    <div style="text-align: center;">
+      <%= link_to 'Confirmar Minha Conta', confirmation_url(@resource, confirmation_token: @token), class: 'button', style: 'color: #ffffff !important; text-decoration: none;' %>
+    </div>
+    
+    <p>Se o botão acima não funcionar, copie e cole este link no seu navegador:</p>
+    <p style="word-break: break-all; color: #1976d2; font-size: 12px;">
+      <%= confirmation_url(@resource, confirmation_token: @token) %>
+    </p>
+    
+    <div class="footer">
+      <p>Esta é uma mensagem automática do sistema Cinelog.</p>
+      <p>Por favor, não responda este e-mail.</p>
+    </div>
+  </div>
+</body>
+</html>

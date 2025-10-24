@@ -1,0 +1,283 @@
+<%= form_with model: filme, local: true do |f| %>
+  <% if filme.errors.any? %>
+    <div class="w3-panel w3-red w3-round" style="padding: 16px; margin-bottom: 24px;">
+      <h4 style="margin: 0 0 12px 0;">
+        <i class="fa fa-exclamation-circle"></i>
+        <%= pluralize(filme.errors.count, "erro") %> <%= filme.errors.count == 1 ? 'impediu' : 'impediram' %> o salvamento:
+      </h4>
+      <ul style="margin: 8px 0 0 0; padding-left: 24px;">
+        <% filme.errors.full_messages.each do |message| %>
+          <li style="margin: 4px 0;"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Campo Título com botão TMDB -->
+  <div class="w3-margin-bottom">
+    <%= f.label :titulo, "Título", class: 'w3-text-grey' %>
+    <div style="display: flex; gap: 12px; margin-top: 8px;">
+      <%= f.text_field :titulo, 
+          class: 'w3-input w3-border w3-round', 
+          style: 'padding: 12px; flex: 1;',
+          id: 'filme_titulo_field',
+          placeholder: 'Ex: Matrix' %>
+      <button type="button" 
+              class="w3-button w3-blue w3-round" 
+              id="buscar-tmdb-btn" 
+              onclick="buscarTmdb()"
+              style="white-space: nowrap; padding: 12px 24px;">
+        <i class="fa fa-search"></i> Buscar TMDB
+      </button>
+    </div>
+    <small class="w3-text-grey" style="font-size: 0.85rem; display: block; margin-top: 4px;">
+      Digite o título e clique em "Buscar TMDB" para preencher automaticamente
+    </small>
+  </div>
+
+  <!-- Status TMDB -->
+  <div id="tmdb-status" style="margin: 16px 0;"></div>
+
+  <!-- Campo Sinopse -->
+  <div class="w3-margin-bottom">
+    <%= f.label :sinopse, "Sinopse", class: 'w3-text-grey' %>
+    <%= f.text_area :sinopse, 
+        class: 'w3-input w3-border w3-round', 
+        rows: 5, 
+        id: 'filme_sinopse_field',
+        style: 'padding: 12px; margin-top: 8px;',
+        placeholder: 'Descrição do filme...' %>
+  </div>
+
+  <!-- Campos em duas colunas -->
+  <div class="w3-row-padding" style="margin: 0 -8px;">
+    <div class="w3-half">
+      <div class="w3-margin-bottom">
+        <%= f.label :ano_lancamento, t('activerecord.attributes.filme.ano_lancamento', default: 'Ano de lançamento'), class: 'w3-text-grey' %>
+        <%= f.number_field :ano_lancamento, 
+            class: 'w3-input w3-border w3-round', 
+            id: 'filme_ano_field',
+            style: 'padding: 12px; margin-top: 8px;',
+            placeholder: '2024' %>
+      </div>
+    </div>
+    
+    <div class="w3-half">
+      <div class="w3-margin-bottom">
+        <%= f.label :duracao_minutos, t('activerecord.attributes.filme.duracao_minutos', default: 'Duração (minutos)'), class: 'w3-text-grey' %>
+        <%= f.number_field :duracao_minutos, 
+            class: 'w3-input w3-border w3-round', 
+            id: 'filme_duracao_field',
+            style: 'padding: 12px; margin-top: 8px;',
+            placeholder: '120' %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Campo Diretor -->
+  <div class="w3-margin-bottom">
+    <%= f.label :diretor, "Diretor", class: 'w3-text-grey' %>
+    <%= f.text_field :diretor, 
+        class: 'w3-input w3-border w3-round', 
+        id: 'filme_diretor_field',
+        style: 'padding: 12px; margin-top: 8px;',
+        placeholder: 'Nome do diretor' %>
+  </div>
+
+  <!-- Campo Categorias -->
+  <div class="w3-margin-bottom">
+    <%= f.label :categoria_ids, "Categorias", class: 'w3-text-grey' %>
+    <div style="margin-top: 8px; padding: 12px; border: 1px solid #ccc; border-radius: 4px; background: #f9f9f9;">
+      <% if Categoria.any? %>
+        <div class="w3-row-padding" style="margin: 0 -8px;">
+          <% Categoria.order(:nome).each do |categoria| %>
+            <div class="w3-col s12 m6 l4" style="margin-bottom: 8px;">
+              <label style="display: flex; align-items: center; cursor: pointer; padding: 4px;">
+                <%= check_box_tag 'filme[categoria_ids][]', 
+                    categoria.id, 
+                    filme.categoria_ids.include?(categoria.id),
+                    style: 'margin-right: 8px;' %>
+                <span style="font-size: 0.9rem;"><%= categoria.nome %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="w3-text-grey" style="margin: 0; font-size: 0.9rem;">
+          <i class="fa fa-info-circle"></i> Nenhuma categoria cadastrada ainda.
+          <% if usuario_signed_in? && (current_usuario.admin? || current_usuario.moderador?) %>
+            <%= link_to 'Criar categoria', new_categoria_path, class: 'w3-text-theme', target: '_blank' %>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+    <small class="w3-text-grey" style="font-size: 0.85rem; display: block; margin-top: 4px;">
+      Selecione uma ou mais categorias para classificar o filme
+    </small>
+  </div>
+
+  <!-- Campo Tags -->
+  <div class="w3-margin-bottom">
+    <%= label_tag :tags_string, "Tags", class: 'w3-text-grey' %>
+    <%= text_field_tag 'filme[tags_string]',
+        filme.tags.map(&:nome).join(', '),
+        class: 'w3-input w3-border w3-round',
+        style: 'padding: 12px; margin-top: 8px;',
+        placeholder: 'Ex: ação, ficção científica, clássico (separadas por vírgula)' %>
+    <small class="w3-text-grey" style="font-size: 0.85rem; display: block; margin-top: 4px;">
+      <i class="fa fa-tag"></i> Adicione palavras-chave para facilitar a busca. Separe as tags por vírgula.
+    </small>
+  </div>
+
+  <!-- Campo Poster -->
+  <div class="w3-margin-bottom">
+    <%= f.label :poster, t('activerecord.attributes.filme.poster', default: 'Poster'), class: 'w3-text-grey' %>
+    <%= f.file_field :poster, 
+        accept: 'image/*', 
+        class: 'w3-input w3-border w3-round',
+        onchange: 'previewPoster(event)',
+        style: 'padding: 12px; margin-top: 8px;' %>
+    <div id="poster-preview" style="margin-top: 12px;"></div>
+  </div>
+
+  <!-- Botões de ação -->
+  <div style="margin-top: 32px; display: flex; gap: 12px;">
+    <%= f.submit t('actions.save', default: 'Salvar'), 
+        class: 'w3-button w3-theme w3-round',
+        style: 'padding: 12px 32px;' %>
+    <%= link_to t('actions.cancel', default: 'Cancelar'), 
+        filmes_path, 
+        class: 'w3-button w3-white w3-border w3-round',
+        style: 'padding: 12px 32px;' %>
+  </div>
+<% end %>
+
+<script>
+  // Função para preencher categorias automaticamente
+  function preencherCategorias(generosTmdb) {
+    // Mapear gêneros TMDB (português) para nomes no sistema
+    const generosMapeados = generosTmdb.map(genero => normalizarGenero(genero));
+    
+    // Desmarcar todos os checkboxes primeiro
+    document.querySelectorAll('input[name="filme[categoria_ids][]"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    
+    // Marcar os checkboxes correspondentes
+    document.querySelectorAll('input[name="filme[categoria_ids][]"]').forEach(checkbox => {
+      const label = checkbox.parentElement.querySelector('span');
+      if (label) {
+        const categoriaNome = label.textContent.trim();
+        if (generosMapeados.some(g => 
+          categoriaNome.toLowerCase().includes(g.toLowerCase()) || 
+          g.toLowerCase().includes(categoriaNome.toLowerCase())
+        )) {
+          checkbox.checked = true;
+        }
+      }
+    });
+  }
+  
+  // Normalizar nomes de gêneros TMDB para português
+  function normalizarGenero(genero) {
+    const mapeamento = {
+      'Action': 'Ação',
+      'Adventure': 'Aventura',
+      'Animation': 'Animação',
+      'Comedy': 'Comédia',
+      'Crime': 'Crime',
+      'Documentary': 'Documentário',
+      'Drama': 'Drama',
+      'Family': 'Família',
+      'Fantasy': 'Fantasia',
+      'History': 'História',
+      'Horror': 'Terror',
+      'Music': 'Música',
+      'Mystery': 'Mistério',
+      'Romance': 'Romance',
+      'Science Fiction': 'Ficção Científica',
+      'TV Movie': 'Filme de TV',
+      'Thriller': 'Suspense',
+      'War': 'Guerra',
+      'Western': 'Faroeste'
+    };
+    
+    return mapeamento[genero] || genero;
+  }
+  
+  function buscarTmdb() {
+    const titulo = document.getElementById('filme_titulo_field').value;
+    const btn = document.getElementById('buscar-tmdb-btn');
+    const status = document.getElementById('tmdb-status');
+    
+    if (!titulo || titulo.trim() === '') {
+      status.innerHTML = '<div class="w3-panel w3-pale-yellow w3-round" style="padding: 12px;"><i class="fa fa-info-circle"></i> Digite um título primeiro</div>';
+      return;
+    }
+    
+    // Desabilitar botão durante busca
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Buscando...';
+    status.innerHTML = '<div class="w3-panel w3-pale-blue w3-round" style="padding: 12px;"><i class="fa fa-hourglass-half"></i> Buscando no TMDB...</div>';
+    
+    fetch('/tmdb_lookup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ titulo: titulo })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.erro) {
+        status.innerHTML = `<div class="w3-panel w3-red w3-round" style="padding: 12px;"><i class="fa fa-times-circle"></i> ${data.erro}</div>`;
+      } else {
+        // Preencher campos com dados do TMDB
+        if (data.sinopse) document.getElementById('filme_sinopse_field').value = data.sinopse;
+        if (data.ano_lancamento) document.getElementById('filme_ano_field').value = data.ano_lancamento;
+        if (data.duracao_minutos) document.getElementById('filme_duracao_field').value = data.duracao_minutos;
+        if (data.diretor) document.getElementById('filme_diretor_field').value = data.diretor;
+        
+        // Preencher categorias automaticamente
+        if (data.generos && data.generos.length > 0) {
+          preencherCategorias(data.generos);
+        }
+        
+        let mensagem = '<div class="w3-panel w3-green w3-round" style="padding: 12px;"><i class="fa fa-check-circle"></i> Dados preenchidos com sucesso!';
+        if (data.generos && data.generos.length > 0) {
+          mensagem += '<br><small>Categorias encontradas: ' + data.generos.join(', ') + '</small>';
+        }
+        mensagem += '</div>';
+        status.innerHTML = mensagem;
+      }
+    })
+    .catch(error => {
+      status.innerHTML = `<div class="w3-panel w3-red w3-round" style="padding: 12px;"><i class="fa fa-exclamation-triangle"></i> Erro na comunicação: ${error.message}</div>`;
+    })
+    .finally(() => {
+      // Reabilitar botão
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa fa-search"></i> Buscar TMDB';
+    });
+  }
+  
+  function previewPoster(event) {
+    const preview = document.getElementById('poster-preview');
+    const file = event.target.files[0];
+    
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.innerHTML = `
+          <div class="w3-card w3-round" style="display: inline-block; padding: 8px;">
+            <img src="${e.target.result}" style="max-width: 200px; max-height: 300px; border-radius: 4px;" alt="Preview do poster">
+          </div>
+        `;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      preview.innerHTML = '';
+    }
+  }
+</script>

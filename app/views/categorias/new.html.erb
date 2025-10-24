@@ -1,0 +1,70 @@
+<div class="w3-container w3-content" style="max-width:600px; margin-top:20px; margin-bottom:80px;">
+  
+  <div class="w3-card-4 w3-round w3-white">
+    <!-- Header -->
+    <div class="w3-container w3-theme" style="padding: 24px;">
+      <h2 style="margin: 0;">
+        <i class="fa fa-tag"></i> Nova Categoria
+      </h2>
+    </div>
+
+    <!-- Formulário -->
+    <div class="w3-container" style="padding: 32px;">
+      <%= form_with model: @categoria, url: categorias_path, local: true do |f| %>
+        
+        <!-- Mensagens de erro -->
+        <% if @categoria.errors.any? %>
+          <div class="w3-panel w3-red w3-round" style="padding: 16px; margin-bottom: 24px;">
+            <h4 style="margin: 0 0 12px 0;">
+              <i class="fa fa-exclamation-circle"></i>
+              <%= pluralize(@categoria.errors.count, "erro") %> 
+              <%= @categoria.errors.count == 1 ? 'impediu' : 'impediram' %> 
+              que esta categoria fosse salva:
+            </h4>
+            <ul style="margin: 0; padding-left: 24px;">
+              <% @categoria.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- Campo Nome -->
+        <div class="w3-margin-bottom">
+          <%= f.label :nome, 'Nome da Categoria', class: 'w3-text-grey', style: 'font-weight: 500;' %>
+          <%= f.text_field :nome, 
+              class: 'w3-input w3-border w3-round',
+              style: 'padding: 12px; margin-top: 8px;',
+              placeholder: 'Ex: Ação, Comédia, Drama...',
+              required: true,
+              autofocus: true %>
+          <small class="w3-text-grey" style="display: block; margin-top: 4px; font-size: 0.85rem;">
+            O nome da categoria deve ser único
+          </small>
+        </div>
+
+        <!-- Botões -->
+        <div style="margin-top: 32px; display: flex; gap: 12px;">
+          <%= f.submit 'Criar Categoria', 
+              class: 'w3-button w3-theme w3-round w3-hover-shadow',
+              style: 'padding: 12px 24px; flex: 1;' %>
+          
+          <%= link_to 'Cancelar', 
+              categorias_path, 
+              class: 'w3-button w3-white w3-border w3-round w3-hover-light-grey',
+              style: 'padding: 12px 24px;' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Dicas -->
+  <div class="w3-panel w3-pale-blue w3-round w3-leftbar w3-border-theme" style="margin-top: 24px; padding: 16px;">
+    <p style="margin: 0; font-size: 0.9rem;">
+      <i class="fa fa-info-circle"></i> <strong>Dica:</strong> 
+      Organize seus filmes por categorias como Ação, Aventura, Comédia, Drama, Ficção Científica, 
+      Terror, Romance, etc. Um filme pode ter múltiplas categorias.
+    </p>
+  </div>
+
+</div>

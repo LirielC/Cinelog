@@ -1,0 +1,438 @@
+pt-BR:
+  activerecord:
+    models:
+      usuario: "Usuário"
+      filme: "Filme"
+      comentario: "Comentário"
+      categoria: "Categoria"
+      importacao: "Importação"
+    attributes:
+      usuario:
+        email: "E-mail"
+        password: "Senha"
+        password_confirmation: "Confirmação de senha"
+        current_password: "Senha atual"
+        remember_me: "Lembrar-me"
+        nome: "Nome"
+        papel: "Papel"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      filme:
+        titulo: "Título"
+        sinopse: "Sinopse"
+        ano_lancamento: "Ano de lançamento"
+        duracao_minutos: "Duração (minutos)"
+        diretor: "Diretor"
+        poster: "Poster"
+        categorias: "Categorias"
+        usuario: "Usuário"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      comentario:
+        conteudo: "Conteúdo"
+        usuario: "Usuário"
+        filme: "Filme"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      categoria:
+        nome: "Nome"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      importacao:
+        arquivo: "Arquivo"
+        status: "Status"
+        total_linhas: "Total de linhas"
+        criados: "Criados"
+        falhas: "Falhas"
+        erros: "Erros"
+        usuario: "Usuário"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+    errors:
+      messages:
+        record_invalid: "A validação falhou: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Não é possível excluir o registro pois existe um %{record} dependente"
+          has_many: "Não é possível excluir o registro pois existem %{record} dependentes"
+      models:
+        filme:
+          attributes:
+            titulo:
+              blank: "não pode ficar em branco"
+              too_short: "é muito curto (mínimo: %{count} caracteres)"
+              duplicado: "já existe um filme com este título (%{titulo}) lançado em %{ano}. Verifique antes de adicionar duplicatas."
+            ano_lancamento:
+              not_a_number: "não é um número"
+              greater_than: "deve ser maior que %{count}"
+        comentario:
+          attributes:
+            conteudo:
+              blank: "não pode ficar em branco"
+              too_short: "é muito curto (mínimo: %{count} caracteres)"
+
+  date:
+    abbr_day_names:
+      - dom
+      - seg
+      - ter
+      - qua
+      - qui
+      - sex
+      - sáb
+    abbr_month_names:
+      - ~
+      - jan
+      - fev
+      - mar
+      - abr
+      - mai
+      - jun
+      - jul
+      - ago
+      - set
+      - out
+      - nov
+      - dez
+    day_names:
+      - domingo
+      - segunda-feira
+      - terça-feira
+      - quarta-feira
+      - quinta-feira
+      - sexta-feira
+      - sábado
+    formats:
+      default: "%d/%m/%Y"
+      long: "%d de %B de %Y"
+      short: "%d de %B"
+    month_names:
+      - ~
+      - janeiro
+      - fevereiro
+      - março
+      - abril
+      - maio
+      - junho
+      - julho
+      - agosto
+      - setembro
+      - outubro
+      - novembro
+      - dezembro
+    order:
+      - :day
+      - :month
+      - :year
+
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: aproximadamente 1 hora
+        other: aproximadamente %{count} horas
+      about_x_months:
+        one: aproximadamente 1 mês
+        other: aproximadamente %{count} meses
+      about_x_years:
+        one: aproximadamente 1 ano
+        other: aproximadamente %{count} anos
+      almost_x_years:
+        one: quase 1 ano
+        other: quase %{count} anos
+      half_a_minute: meio minuto
+      less_than_x_minutes:
+        one: menos de um minuto
+        other: menos de %{count} minutos
+      less_than_x_seconds:
+        one: menos de 1 segundo
+        other: menos de %{count} segundos
+      over_x_years:
+        one: mais de 1 ano
+        other: mais de %{count} anos
+      x_days:
+        one: 1 dia
+        other: "%{count} dias"
+      x_minutes:
+        one: 1 minuto
+        other: "%{count} minutos"
+      x_months:
+        one: 1 mês
+        other: "%{count} meses"
+      x_seconds:
+        one: 1 segundo
+        other: "%{count} segundos"
+    prompts:
+      day: Dia
+      hour: Hora
+      minute: Minuto
+      month: Mês
+      second: Segundo
+      year: Ano
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: deve ser aceito
+      blank: não pode ficar em branco
+      confirmation: não é igual a %{attribute}
+      empty: não pode ficar vazio
+      equal_to: deve ser igual a %{count}
+      even: deve ser par
+      exclusion: não está disponível
+      greater_than: deve ser maior que %{count}
+      greater_than_or_equal_to: deve ser maior ou igual a %{count}
+      inclusion: não está incluído na lista
+      invalid: não é válido
+      less_than: deve ser menor que %{count}
+      less_than_or_equal_to: deve ser menor ou igual a %{count}
+      model_invalid: "A validação falhou: %{errors}"
+      not_a_number: não é um número
+      not_an_integer: não é um número inteiro
+      not_saved:
+        one: "Não foi possível salvar %{resource}: 1 erro encontrado"
+        other: "Não foi possível salvar %{resource}: %{count} erros encontrados"
+      odd: deve ser ímpar
+      other_than: deve ser diferente de %{count}
+      present: deve ficar em branco
+      required: é obrigatório(a)
+      taken: já está em uso
+      too_long:
+        one: "é muito longo (máximo: 1 caractere)"
+        other: "é muito longo (máximo: %{count} caracteres)"
+      too_short:
+        one: "é muito curto (mínimo: 1 caractere)"
+        other: "é muito curto (mínimo: %{count} caracteres)"
+      wrong_length:
+        one: não possui o tamanho esperado (1 caractere)
+        other: não possui o tamanho esperado (%{count} caracteres)
+    template:
+      body: "Por favor, verifique o(s) seguinte(s) campo(s):"
+      header:
+        one: "Não foi possível gravar %{model}: 1 erro"
+        other: "Não foi possível gravar %{model}: %{count} erros"
+
+  helpers:
+    select:
+      prompt: Por favor selecione
+    submit:
+      create: Criar %{model}
+      submit: Salvar %{model}
+      update: Atualizar %{model}
+
+  number:
+    currency:
+      format:
+        delimiter: "."
+        format: "%u %n"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: R$
+    format:
+      delimiter: "."
+      precision: 3
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion:
+            one: bilhão
+            other: bilhões
+          million:
+            one: milhão
+            other: milhões
+          quadrillion:
+            one: quatrilhão
+            other: quatrilhões
+          thousand: mil
+          trillion:
+            one: trilhão
+            other: trilhões
+          unit: ''
+      format:
+        delimiter: ""
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+    percentage:
+      format:
+        delimiter: "."
+        format: "%n%"
+    precision:
+      format:
+        delimiter: "."
+
+  support:
+    array:
+      last_word_connector: " e "
+      two_words_connector: " e "
+      words_connector: ", "
+
+  time:
+    am: ''
+    formats:
+      default: "%a, %d de %B de %Y, %H:%M:%S %z"
+      long: "%d de %B de %Y, %H:%M"
+      short: "%d de %B, %H:%M"
+    pm: ''
+
+  # Traduções específicas do Devise
+  devise:
+    confirmations:
+      confirmed: "Sua conta foi confirmada com sucesso."
+      send_instructions: "Você receberá um e-mail com instruções sobre como confirmar sua conta em alguns minutos."
+      send_paranoid_instructions: "Se o seu e-mail existir em nosso banco de dados, você receberá um e-mail com instruções sobre como confirmar sua conta em alguns minutos."
+    failure:
+      already_authenticated: "Você já está autenticado."
+      inactive: "Sua conta ainda não foi ativada."
+      invalid: "%{authentication_keys} ou senha inválidos."
+      locked: "Sua conta está bloqueada."
+      last_attempt: "Você tem mais uma tentativa antes de sua conta ser bloqueada."
+      not_found_in_database: "%{authentication_keys} ou senha inválidos."
+      timeout: "Sua sessão expirou. Por favor, faça login novamente para continuar."
+      unauthenticated: "Você precisa fazer login ou se registrar antes de continuar."
+      unconfirmed: "Você precisa confirmar seu e-mail antes de continuar."
+    mailer:
+      confirmation_instructions:
+        subject: "🎬 Cinelog - Confirme sua conta"
+      reset_password_instructions:
+        subject: "🔑 Cinelog - Redefinição de senha"
+      unlock_instructions:
+        subject: "🔓 Cinelog - Instruções de desbloqueio"
+      email_changed:
+        subject: "📧 Cinelog - E-mail alterado"
+      password_change:
+        subject: "✓ Cinelog - Senha alterada com sucesso"
+    omniauth_callbacks:
+      failure: "Não foi possível autenticá-lo em %{kind} porque \"%{reason}\"."
+      success: "Autenticado com sucesso em %{kind}."
+    passwords:
+      no_token: "Você não pode acessar esta página sem vir de um e-mail de redefinição de senha. Se você veio de um e-mail de redefinição de senha, certifique-se de usar a URL completa fornecida."
+      send_instructions: "Você receberá um e-mail com instruções sobre como redefinir sua senha em alguns minutos."
+      send_paranoid_instructions: "Se o seu e-mail existir em nosso banco de dados, você receberá um link de recuperação de senha em alguns minutos."
+      updated: "Sua senha foi alterada com sucesso. Você está autenticado."
+      updated_not_active: "Sua senha foi alterada com sucesso."
+    registrations:
+      destroyed: "Tchau! Sua conta foi cancelada com sucesso. Esperamos vê-lo novamente em breve."
+      signed_up: "Bem-vindo! Você se registrou com sucesso."
+      signed_up_but_inactive: "Você se registrou com sucesso. No entanto, não foi possível fazer login porque sua conta ainda não foi ativada."
+      signed_up_but_locked: "Você se registrou com sucesso. No entanto, não foi possível fazer login porque sua conta está bloqueada."
+      signed_up_but_unconfirmed: "Uma mensagem com um link de confirmação foi enviada para o seu e-mail. Por favor, siga o link para ativar sua conta."
+      update_needs_confirmation: "Você atualizou sua conta com sucesso, mas precisamos verificar seu novo endereço de e-mail. Por favor, verifique seu e-mail e siga o link de confirmação para confirmar seu novo endereço de e-mail."
+      updated: "Sua conta foi atualizada com sucesso."
+      updated_but_not_signed_in: "Sua conta foi atualizada com sucesso, mas como sua senha foi alterada, você precisa fazer login novamente."
+    sessions:
+      signed_in: "Login efetuado com sucesso."
+      signed_out: "Logout efetuado com sucesso."
+      already_signed_out: "Logout efetuado com sucesso."
+    unlocks:
+      send_instructions: "Você receberá um e-mail com instruções sobre como desbloquear sua conta em alguns minutos."
+      send_paranoid_instructions: "Se sua conta existir, você receberá um e-mail com instruções sobre como desbloqueá-la em alguns minutos."
+      unlocked: "Sua conta foi desbloqueada com sucesso. Por favor, faça login para continuar."
+  
+  # Mensagens customizadas da aplicação
+  cinelog:
+    filmes:
+      created: "Filme criado com sucesso!"
+      updated: "Filme atualizado com sucesso!"
+      destroyed: "Filme excluído com sucesso!"
+      not_found: "Filme não encontrado."
+      unauthorized: "Você não tem permissão para realizar esta ação."
+    comentarios:
+      created: "Comentário adicionado com sucesso!"
+      destroyed: "Comentário excluído com sucesso!"
+      unauthorized: "Você não tem permissão para excluir este comentário."
+    importacoes:
+      created: "Importação iniciada! Você será notificado quando concluir."
+      file_required: "Por favor, selecione um arquivo CSV."
+      invalid_format: "Formato de arquivo inválido. Use apenas arquivos CSV."
+    search:
+      no_results: "Nenhum resultado encontrado para '%{query}'."
+      results_count:
+        one: "1 filme encontrado"
+        other: "%{count} filmes encontrados"
+    
+  # Seletor de idiomas
+  languages:
+    pt-BR: "Português"
+    en: "English"
+    switch: "Idioma"
+  
+  # Devise views específicas
+  devise_views:
+    sessions:
+      new:
+        title: "Entrar"
+        email: "E-mail"
+        password: "Senha"
+        remember_me: "Lembrar-me"
+        submit: "Entrar"
+    registrations:
+      new:
+        title: "Criar conta"
+        email: "E-mail"
+        password: "Senha"
+        password_confirmation: "Confirmar senha"
+        minimum_chars: "caracteres no mínimo"
+        submit: "Cadastrar"
+    passwords:
+      new:
+        title: "Esqueceu sua senha?"
+        email: "E-mail"
+        submit: "Enviar instruções"
+    shared:
+      links:
+        log_in: "Entrar"
+        sign_up: "Criar conta"
+        forgot_password: "Esqueceu sua senha?"
+        confirmation_instructions: "Não recebeu as instruções de confirmação?"
+        unlock_instructions: "Não recebeu as instruções de desbloqueio?"
+  
+  # Adições da interface de filmes
+  movies:
+    no_movies: "Nenhum filme encontrado."
+    search: "Buscar Filmes"
+    search_placeholder: "Digite o título do filme..."
+    no_poster: "Sem imagem"
+    featured: "Filmes em Destaque"
+  
+  # Carrossel
+  carousel:
+    previous: "Anterior"
+    next: "Próximo"
+  
+  # Traduções do menu
+  menu:
+    home: "Início"
+    movies: "Filmes"
+    add_movie: "Adicionar Filme"
+    import_csv: "Importar CSV"
+    login: "Entrar"
+    register: "Cadastrar"
+    logout: "Sair"
+    profile: "Perfil"
+  
+  # Ações
+  actions:
+    search: "Buscar"
+    view_details: "Ver Detalhes"
+    edit: "Editar"
+    delete: "Excluir"
+    cancel: "Cancelar"
+    save: "Salvar"
+    back: "Voltar"

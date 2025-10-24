@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #ef4444;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: #ef4444;
+      margin: 0;
+      font-size: 24px;
+    }
+    .logo {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    .error-icon {
+      font-size: 64px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .error-message {
+      background: #fee;
+      border-left: 4px solid #ef4444;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+    .error-message p {
+      margin: 0;
+      color: #721c24;
+    }
+    .error-details {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .error-details h3 {
+      margin-top: 0;
+      color: #721c24;
+    }
+    .error-details pre {
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      overflow-x: auto;
+      font-size: 13px;
+      color: #d32f2f;
+    }
+    .button {
+      display: inline-block;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white !important;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+      margin: 20px auto;
+      display: block;
+      width: fit-content;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+      color: #666;
+      font-size: 14px;
+    }
+    .help-box {
+      background: #e3f2fd;
+      border-left: 4px solid #1976d2;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+    .help-box h4 {
+      margin-top: 0;
+      color: #0d47a1;
+    }
+    .help-box ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    .help-box li {
+      margin: 5px 0;
+      color: #1565c0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🎬</div>
+      <h1>Cinelog</h1>
+      <p style="margin: 5px 0 0 0; color: #666;">Sistema de Gestão de Filmes</p>
+    </div>
+
+    <div class="error-icon">❌</div>
+
+    <h2 style="color: #721c24; text-align: center; margin-bottom: 10px;">
+      Erro na Importação de Filmes
+    </h2>
+
+    <p style="text-align: center; color: #666; font-size: 16px;">
+      Olá <strong><%= @usuario.nome %></strong>,
+    </p>
+
+    <div class="error-message">
+      <p>
+        <strong>Infelizmente, ocorreu um erro ao processar sua importação de filmes.</strong>
+      </p>
+      <p style="margin-top: 10px;">
+        Nenhum filme foi adicionado à sua biblioteca. Por favor, verifique os detalhes do erro abaixo e tente novamente.
+      </p>
+    </div>
+
+    <div class="error-details">
+      <h3>🔍 Detalhes do Erro:</h3>
+      <pre><%= @importacao.erros %></pre>
+    </div>
+
+    <div class="help-box">
+      <h4>💡 Como Resolver?</h4>
+      <ul>
+        <li>Verifique se o arquivo CSV está no formato correto</li>
+        <li>Certifique-se de que as colunas obrigatórias estão presentes: <strong>titulo, sinopse, ano_lancamento, duracao_minutos, diretor, categorias</strong></li>
+        <li>Verifique se o arquivo não está corrompido</li>
+        <li>Confirme que o tamanho do arquivo não excede <strong>5MB</strong></li>
+        <li>Use codificação <strong>UTF-8</strong> no arquivo</li>
+      </ul>
+    </div>
+
+    <a href="<%= Rails.application.routes.url_helpers.new_importacao_url %>" class="button">
+      🔄 Tentar Nova Importação
+    </a>
+
+    <div class="footer">
+      <p>Este é um e-mail automático do sistema Cinelog.</p>
+      <p style="margin-top: 10px;">
+        <small>
+          Se precisar de ajuda, entre em contato com o suporte.
+        </small>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

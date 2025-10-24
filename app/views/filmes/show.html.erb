@@ -1,0 +1,156 @@
+<!-- Page Container com W3.CSS -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:20px">
+  
+  <div class="w3-row-padding">
+    <!-- Coluna Principal -->
+    <div class="w3-col m8 l8">
+      <!-- Card do Filme -->
+      <div class="w3-card w3-round w3-white w3-margin-bottom">
+        <div class="w3-container w3-padding">
+          <h1 class="w3-text-theme" style="font-size: 2.5rem; margin-bottom: 16px;">
+            <%= exibir_titulo(@filme) %>
+          </h1>
+          
+          <div style="margin-bottom: 20px;">
+            <% if @filme.diretor.present? %>
+              <p style="margin: 8px 0; font-size: 1.1rem;">
+                <i class="fa fa-user w3-text-theme"></i> 
+                <strong>Diretor:</strong> 
+                <%= @filme.diretor %>
+              </p>
+            <% end %>
+            
+            <% if @filme.ano_lancamento.present? %>
+              <p style="margin: 8px 0; font-size: 1.1rem;">
+                <i class="fa fa-calendar w3-text-theme"></i> 
+                <strong><%= "Ano de Lançamento" %>:</strong> 
+                <%= @filme.ano_lancamento %>
+              </p>
+            <% end %>
+            
+            <% if @filme.duracao_minutos.present? %>
+              <p style="margin: 8px 0; font-size: 1.1rem;">
+                <i class="fa fa-clock-o w3-text-theme"></i> 
+                <strong><%= "Duração" %>:</strong> 
+                <%= @filme.duracao_minutos %> <%= "minutos" %>
+              </p>
+            <% end %>
+            
+            <% if @filme.categorias.any? %>
+              <p style="margin: 8px 0; font-size: 1.1rem;">
+                <i class="fa fa-tags w3-text-theme"></i> 
+                <strong><%= "Categorias" %>:</strong>
+                <span style="margin-left: 8px;">
+                  <% @filme.categorias.order(:nome).each_with_index do |categoria, index| %>
+                    <span class="w3-tag w3-round w3-theme" style="margin: 2px 4px; padding: 4px 12px;">
+                      <%= categoria.nome %>
+                    </span>
+                  <% end %>
+                </span>
+              </p>
+            <% end %>
+            
+            <% if @filme.tags.any? %>
+              <p style="margin: 8px 0; font-size: 1.1rem;">
+                <i class="fa fa-tag w3-text-theme"></i> 
+                <strong>Tags:</strong>
+                <span style="margin-left: 8px;">
+                  <% @filme.tags.order(:nome).each do |tag| %>
+                    <span class="w3-tag w3-round w3-light-grey" style="margin: 2px 4px; padding: 4px 12px; border: 1px solid #ccc;">
+                      #<%= tag.nome %>
+                    </span>
+                  <% end %>
+                </span>
+              </p>
+            <% end %>
+          </div>
+
+          <% sinopse_texto = exibir_sinopse(@filme) %>
+          <% if sinopse_texto.present? %>
+            <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+              <h2 class="w3-text-theme" style="font-size: 1.8rem; margin-bottom: 16px;">
+                <i class="fa fa-file-text-o"></i> <%= "Sinopse" %>
+              </h2>
+              <p style="font-size: 1.1rem; line-height: 1.8; color: #555; text-align: justify;">
+                <%= sinopse_texto %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Card de Comentários -->
+      <div class="w3-card w3-round w3-white w3-margin-bottom">
+        <div class="w3-container w3-padding">
+          <h3 class="w3-text-theme" style="font-size: 1.5rem; margin-bottom: 16px;">
+            <i class="fa fa-comments"></i> <%= "Comentários" %>
+          </h3>
+          <%= render partial: 'comentarios/lista', locals: { comentarios: @comentarios } %>
+
+          <h4 class="w3-text-theme" style="margin-top: 24px; font-size: 1.2rem;">
+            <i class="fa fa-comment-o"></i> <%= "Adicionar comentário" %>
+          </h4>
+          <% unless usuario_signed_in? %>
+            <div class="w3-panel w3-pale-blue w3-round w3-leftbar w3-border-theme" style="padding: 12px 16px; margin-bottom: 16px;">
+              <p style="margin: 0; font-size: 0.9rem;">
+                <i class="fa fa-info-circle"></i> 
+                <strong>Comentário anônimo:</strong> Você pode comentar sem fazer login, basta informar seu nome.
+              </p>
+            </div>
+          <% end %>
+          <%= form_with model: [@filme, Comentario.new], local: true do |f| %>
+            <% unless usuario_signed_in? %>
+              <div class="w3-margin-bottom">
+                <%= f.label :nome_autor, t('your_name', default: 'Seu nome'), class: 'w3-text-grey' %>
+                <%= f.text_field :nome_autor, 
+                    class: 'w3-input w3-border w3-round', 
+                    style: 'padding: 12px;',
+                    placeholder: 'Digite seu nome (opcional)' %>
+                <small class="w3-text-grey" style="font-size: 0.85rem; display: block; margin-top: 4px;">
+                  Se deixar em branco, seu comentário será "Anônimo"
+                </small>
+              </div>
+            <% end %>
+            <div class="w3-margin-bottom">
+              <%= f.label :conteudo, t('comment', default: 'Comentário'), class: 'w3-text-grey' %>
+              <%= f.text_area :conteudo, 
+                  class: 'w3-input w3-border w3-round', 
+                  rows: 4, 
+                  style: 'padding: 12px;',
+                  placeholder: 'Escreva seu comentário sobre o filme...',
+                  required: true %>
+            </div>
+            <%= f.submit t('send', default: 'Enviar comentário'), 
+                class: 'w3-button w3-theme w3-round w3-hover-shadow', 
+                style: 'padding: 12px 24px;' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="w3-col m4 l4">
+      <div class="w3-card w3-round w3-white w3-margin-bottom">
+        <% if @filme.poster.attached? %>
+          <%= image_tag @filme.poster, style: 'width: 100%; border-radius: 8px 8px 0 0;', alt: exibir_titulo(@filme) %>
+        <% else %>
+          <div class="poster-placeholder" style="height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f0f0f0; border-radius: 8px 8px 0 0;">
+            <i class="fa fa-film" style="font-size: 5rem; color: #999; margin-bottom: 16px;"></i>
+            <p style="color: #999; margin: 0; font-size: 1.2rem;">Sem imagem</p>
+          </div>
+        <% end %>
+        
+        <% if usuario_signed_in? && (current_usuario.admin? || @filme.usuario == current_usuario) %>
+          <div class="w3-container w3-padding">
+            <%= link_to edit_filme_path(@filme), class: 'w3-button w3-theme w3-round w3-margin-bottom', style: 'width: 100%;' do %>
+              <i class="fa fa-edit"></i> <%= "Editar" %>
+            <% end %>
+            <%= button_to filme_path(@filme), method: :delete, data: { turbo_confirm: 'Tem certeza que deseja excluir este filme?' }, class: 'w3-button w3-red w3-round', style: 'width: 100%;' do %>
+              <i class="fa fa-trash"></i> <%= "Excluir" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

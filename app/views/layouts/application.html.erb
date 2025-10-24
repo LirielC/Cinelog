@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cinelog - Sistema de Gestão de Filmes</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    
+    <!-- Custom Theme -->
+    <%= stylesheet_link_tag 'tema', media: 'all' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+    
+    <!-- Custom JavaScript -->
+    <%= javascript_include_tag 'w3functions', defer: true %>
+    <%= javascript_include_tag 'carrossel', defer: true %>
+    <%= javascript_include_tag 'verificador_duplicatas', defer: true %>
+  </head>
+
+  <body class="w3-theme-l5" style="min-height: 100vh; display: flex; flex-direction: column;">
+    <%= render 'shared/header' %>
+
+    <main style="flex: 1;">
+      <% if flash[:notice] %>
+        <div class="w3-panel w3-green w3-round w3-display-container" style="max-width: 600px; margin: 80px auto 20px auto; padding: 16px;">
+          <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright" style="padding: 4px 12px;">&times;</span>
+          <i class="fa fa-check-circle"></i> <%= flash[:notice] %>
+        </div>
+      <% end %>
+      <% if flash[:alert] %>
+        <div class="w3-panel w3-red w3-round w3-display-container" style="max-width: 600px; margin: 80px auto 20px auto; padding: 16px;">
+          <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright" style="padding: 4px 12px;">&times;</span>
+          <i class="fa fa-exclamation-triangle"></i> <%= flash[:alert] %>
+        </div>
+      <% end %>
+      <%= yield %>
+    </main>
+
+    <%= render 'shared/footer' %>
+  </body>
+</html>

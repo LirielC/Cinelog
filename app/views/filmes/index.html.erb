@@ -1,0 +1,171 @@
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;">
+  
+  <!-- Carrossel de Filmes em Destaque -->
+  <%= render 'shared/carrossel' %>
+  
+  <!-- Busca Moderna de Filmes -->
+  <div class="search-container">
+    <div class="search-header">
+      <i class="fa fa-search"></i>
+      <h2>Buscar Filmes</h2>
+    </div>
+    <%= form_with url: buscar_filmes_path, method: :get, local: true, class: "search-form" do |f| %>
+      <div class="search-input-wrapper">
+        <%= f.text_field :q, 
+            placeholder: "Digite o nome do filme, diretor ou gênero...", 
+            class: 'search-input',
+            autocomplete: 'off' %>
+        <%= f.submit "Buscar", class: 'search-button' %>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Grid de Filmes -->
+  <div class="filmes-grid">
+    <% if @filmes.any? %>
+      <% @filmes.each do |filme| %>
+        <div class="filme-card">
+          <%= link_to filme_path(filme), class: 'filme-card-link' do %>
+            <div class="filme-poster">
+              <% if filme.poster.attached? %>
+                <%= image_tag filme.poster, 
+                    alt: exibir_titulo(filme),
+                    class: 'filme-poster-img' %>
+              <% else %>
+                <div class="filme-poster-placeholder">
+                  <i class="fa fa-film"></i>
+                  <p>Sem imagem</p>
+                </div>
+              <% end %>
+              <div class="filme-overlay">
+                <i class="fa fa-play-circle"></i>
+              </div>
+            </div>
+          <% end %>
+          
+          <div class="filme-info">
+            <h3 class="filme-title">
+              <%= link_to exibir_titulo(filme), filme_path(filme) %>
+            </h3>
+            
+            <% sinopse_texto = exibir_sinopse(filme) %>
+            <% if sinopse_texto.present? %>
+              <p class="filme-sinopse">
+                <%= truncate(sinopse_texto, length: 150) %>
+              </p>
+            <% end %>
+            
+            <div class="filme-meta">
+              <% if filme.ano_lancamento.present? %>
+                <span class="filme-meta-item">
+                  <i class="fa fa-calendar"></i> <%= filme.ano_lancamento %>
+                </span>
+              <% end %>
+              <% if filme.duracao_minutos.present? %>
+                <span class="filme-meta-item">
+                  <i class="fa fa-clock-o"></i> <%= filme.duracao_minutos %> min
+                </span>
+              <% end %>
+            </div>
+            
+            <% if filme.diretor.present? %>
+              <div class="filme-diretor">
+                <i class="fa fa-user"></i>
+                <span><%= filme.diretor %></span>
+              </div>
+            <% end %>
+            
+            <%= link_to filme_path(filme), class: 'filme-btn' do %>
+              <i class="fa fa-eye"></i> Ver detalhes
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="w3-col m12">
+        <div class="w3-panel w3-pale-yellow w3-round w3-border">
+          <p class="w3-center">
+            <i class="fa fa-info-circle w3-large"></i><br>
+            <%= "Nenhum filme cadastrado ainda" %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Navegação de paginação %>
+  <% if @pagy %>
+    <style>
+      /* CSS inline para paginação - forçar aplicação */
+      .pagination-custom {
+        display: block;
+        width: 100%;
+      }
+      
+      .pagination {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 40px 20px !important;
+        margin: 20px 0 !important;
+        list-style: none !important;
+        border: none !important;
+        background: none !important;
+      }
+      
+      .pagination .page-item {
+        margin: 0 !important;
+        display: inline-block !important;
+      }
+      
+      .pagination .page-link {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 45px !important;
+        height: 45px !important;
+        padding: 0 14px !important;
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        color: #4a5568 !important;
+        background: white !important;
+        border: 2px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+      }
+      
+      .pagination .page-item:not(.disabled):not(.active) .page-link:hover {
+        color: white !important;
+        background: linear-gradient(135deg, #1976d2 0%, #12B1D1 100%) !important;
+        border-color: #1976d2 !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 8px 25px rgba(25, 118, 210, 0.35) !important;
+      }
+      
+      .pagination .page-item.active .page-link {
+        color: white !important;
+        background: linear-gradient(135deg, #1976d2 0%, #12B1D1 100%) !important;
+        border-color: #1976d2 !important;
+        box-shadow: 0 5px 20px rgba(25, 118, 210, 0.4) !important;
+        font-weight: 700 !important;
+        cursor: default !important;
+      }
+      
+      .pagination .page-item.disabled .page-link {
+        color: #cbd5e0 !important;
+        background: #f7fafc !important;
+        opacity: 0.6 !important;
+        cursor: not-allowed !important;
+      }
+    </style>
+    <div class="w3-center w3-margin-top w3-margin-bottom">
+      <%= pagy_nav_custom(@pagy) %>
+    </div>
+    </div>
+  <% end %>
+</section>

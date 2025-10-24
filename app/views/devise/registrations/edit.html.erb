@@ -1,0 +1,122 @@
+<!-- Container de Edição de Conta com W3.CSS -->
+<div class="w3-container w3-content" style="max-width:700px; margin-top:20px; margin-bottom:80px;">
+  <div class="w3-card-4 w3-round w3-white">
+    <!-- Header do Card -->
+    <div class="w3-container w3-theme" style="padding: 24px;">
+      <h2 style="margin: 0;"><i class="fa fa-user-circle"></i> <%= "Editar Conta" %></h2>
+    </div>
+
+    <!-- Formulário de Edição -->
+    <div class="w3-container" style="padding: 32px;">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <!-- Campo Nome -->
+        <div class="w3-margin-bottom">
+          <%= f.label :nome, t('activerecord.attributes.usuario.nome', default: 'Nome'), class: 'w3-text-grey' %>
+          <%= f.text_field :nome, 
+              autofocus: true, 
+              autocomplete: "name",
+              class: 'w3-input w3-border w3-round',
+              style: 'padding: 12px; margin-top: 8px;' %>
+        </div>
+
+        <!-- Campo Email -->
+        <div class="w3-margin-bottom">
+          <%= f.label :email, t('activerecord.attributes.usuario.email', default: 'Email'), class: 'w3-text-grey' %>
+          <%= f.email_field :email, 
+              autocomplete: "email",
+              class: 'w3-input w3-border w3-round',
+              style: 'padding: 12px; margin-top: 8px;' %>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div class="w3-panel w3-pale-yellow w3-round" style="padding: 12px; margin-bottom: 16px;">
+            <i class="fa fa-info-circle"></i> 
+            <%= t('devise.registrations.waiting_confirmation', default: 'Aguardando confirmação para') %>: 
+            <strong><%= resource.unconfirmed_email %></strong>
+          </div>
+        <% end %>
+
+        <!-- Campo Nova Senha -->
+        <div class="w3-margin-bottom">
+          <%= f.label :password, class: 'w3-text-grey' do %>
+            <%= t('activerecord.attributes.usuario.password', default: 'Nova Senha') %>
+            <span class="w3-text-grey" style="font-size: 0.85rem; font-weight: normal;">
+              (<%= t('devise.registrations.leave_blank', default: 'deixe em branco se não quiser alterar') %>)
+            </span>
+          <% end %>
+          <%= f.password_field :password, 
+              autocomplete: "new-password",
+              class: 'w3-input w3-border w3-round',
+              style: 'padding: 12px; margin-top: 8px;',
+              placeholder: '••••••••' %>
+          <% if @minimum_password_length %>
+            <small class="w3-text-grey" style="font-size: 0.85rem; display: block; margin-top: 4px;">
+              <%= @minimum_password_length %> <%= t('devise.registrations.characters_minimum', default: 'caracteres no mínimo') %>
+            </small>
+          <% end %>
+        </div>
+
+        <!-- Confirmação de Nova Senha -->
+        <div class="w3-margin-bottom">
+          <%= f.label :password_confirmation, t('activerecord.attributes.usuario.password_confirmation', default: 'Confirmar Nova Senha'), class: 'w3-text-grey' %>
+          <%= f.password_field :password_confirmation, 
+              autocomplete: "new-password",
+              class: 'w3-input w3-border w3-round',
+              style: 'padding: 12px; margin-top: 8px;',
+              placeholder: '••••••••' %>
+        </div>
+
+        <!-- Senha Atual (obrigatória) -->
+        <div class="w3-margin-bottom">
+          <%= f.label :current_password, class: 'w3-text-grey' do %>
+            <%= t('activerecord.attributes.usuario.current_password', default: 'Senha Atual') %>
+            <span class="w3-text-grey" style="font-size: 0.85rem; font-weight: normal;">
+              (<%= t('devise.registrations.current_password_required', default: 'necessária para confirmar as alterações') %>)
+            </span>
+          <% end %>
+          <%= f.password_field :current_password, 
+              autocomplete: "current-password",
+              class: 'w3-input w3-border w3-round',
+              style: 'padding: 12px; margin-top: 8px;',
+              placeholder: '••••••••' %>
+        </div>
+
+        <!-- Botão de Submit -->
+        <div style="margin-top: 24px;">
+          <%= f.submit t('actions.update', default: 'Atualizar'), 
+              class: 'w3-button w3-theme w3-round w3-block',
+              style: 'padding: 12px; font-size: 1rem; font-weight: 500;' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Seção de Cancelar Conta -->
+  <div class="w3-card w3-round w3-white" style="margin-top: 24px;">
+    <div class="w3-container" style="padding: 24px;">
+      <h3 class="w3-text-red" style="margin: 0 0 16px 0;">
+        <i class="fa fa-exclamation-triangle"></i> 
+        <%= t('devise.registrations.cancel_account', default: 'Cancelar minha conta') %>
+      </h3>
+      <p class="w3-text-grey" style="margin-bottom: 16px;">
+        <%= t('devise.registrations.unhappy', default: 'Não está satisfeito?') %>
+      </p>
+      <%= button_to registration_path(resource_name), 
+          data: { confirm: t('devise.registrations.confirm_delete', default: 'Tem certeza? Esta ação não pode ser desfeita.'), turbo_confirm: t('devise.registrations.confirm_delete', default: 'Tem certeza?') }, 
+          method: :delete,
+          class: 'w3-button w3-red w3-round',
+          style: 'padding: 10px 20px;' do %>
+        <i class="fa fa-trash"></i> <%= t('devise.registrations.delete_account', default: 'Excluir minha conta') %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Botão Voltar -->
+  <div style="margin-top: 24px;">
+    <%= link_to :back, class: 'w3-button w3-white w3-border w3-round' do %>
+      <i class="fa fa-arrow-left"></i> <%= "Voltar" %>
+    <% end %>
+  </div>
+</div>

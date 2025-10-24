@@ -1,0 +1,45 @@
+<% if comentarios.any? %>
+  <% comentarios.each do |comentario| %>
+    <div class="w3-card w3-round w3-white w3-margin-bottom" style="padding: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <p style="margin: 0;">
+          <strong class="w3-text-theme">
+            <% if comentario.usuario.present? %>
+              <i class="fa fa-user"></i> 
+              <%= comentario.nome_autor || comentario.usuario.nome || comentario.usuario.email %>
+            <% else %>
+              <i class="fa fa-user-circle-o"></i> 
+              <%= comentario.nome_autor || 'Anônimo' %>
+              <span class="w3-tag w3-round w3-pale-yellow" style="font-size: 0.7rem; margin-left: 4px; padding: 2px 8px; font-weight: normal;">
+                Anônimo
+              </span>
+            <% end %>
+          </strong>
+          <span class="w3-text-grey" style="font-size: 0.85rem; margin-left: 8px;">
+            <i class="fa fa-clock-o"></i> <%= l comentario.created_at, format: :short %>
+          </span>
+        </p>
+        
+        <% if usuario_signed_in? && (current_usuario.admin? || current_usuario.moderador? || comentario.usuario == current_usuario) %>
+          <%= button_to filme_comentario_path(comentario.filme, comentario), 
+              method: :delete, 
+              data: { turbo_confirm: 'Tem certeza que deseja remover este comentário?' },
+              class: 'w3-button w3-small w3-red w3-round',
+              style: 'padding: 4px 12px;' do %>
+            <i class="fa fa-trash"></i> <%= "Remover" %>
+          <% end %>
+        <% end %>
+      </div>
+      
+      <p style="margin: 12px 0 0 0; line-height: 1.6; color: #555;">
+        <%= comentario.conteudo %>
+      </p>
+    </div>
+  <% end %>
+<% else %>
+  <div class="w3-panel w3-pale-blue w3-round" style="padding: 16px;">
+    <p class="w3-center" style="margin: 0;">
+      <i class="fa fa-info-circle"></i> <%= "Nenhum comentário ainda. Seja o primeiro!" %>
+    </p>
+  </div>
+<% end %>

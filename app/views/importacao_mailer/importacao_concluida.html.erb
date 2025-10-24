@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #1976d2;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: #1976d2;
+      margin: 0;
+      font-size: 24px;
+    }
+    .logo {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    .success-icon {
+      font-size: 64px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .stats {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+    .stat-label {
+      font-weight: 600;
+      color: #555;
+    }
+    .stat-value {
+      font-weight: 700;
+      color: #1976d2;
+      font-size: 18px;
+    }
+    .stat-value.success {
+      color: #10b981;
+    }
+    .stat-value.error {
+      color: #ef4444;
+    }
+    .button {
+      display: inline-block;
+      background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+      color: white !important;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+      margin: 20px auto;
+      display: block;
+      width: fit-content;
+      box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+    }
+    .button:hover {
+      background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+      color: #666;
+      font-size: 14px;
+    }
+    .message {
+      background: #e8f5e9;
+      border-left: 4px solid #10b981;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+    .message p {
+      margin: 0;
+      color: #2d5016;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🎬</div>
+      <h1>Cinelog</h1>
+      <p style="margin: 5px 0 0 0; color: #666;">Sistema de Gestão de Filmes</p>
+    </div>
+
+    <div class="success-icon">✅</div>
+
+    <h2 style="color: #2d3748; text-align: center; margin-bottom: 10px;">
+      Importação Concluída com Sucesso!
+    </h2>
+
+    <p style="text-align: center; color: #666; font-size: 16px;">
+      Olá <strong><%= @usuario.nome %></strong>,
+    </p>
+
+    <div class="message">
+      <p>
+        Sua importação de filmes foi processada e concluída com sucesso! 
+        Os filmes já estão disponíveis na sua biblioteca.
+      </p>
+    </div>
+
+    <div class="stats">
+      <h3 style="margin-top: 0; color: #2d3748;">📊 Resumo da Importação</h3>
+      
+      <div class="stat-item">
+        <span class="stat-label">📄 Total de linhas processadas:</span>
+        <span class="stat-value"><%= @importacao.total_linhas %></span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-label">✅ Filmes criados com sucesso:</span>
+        <span class="stat-value success"><%= @importacao.criados %></span>
+      </div>
+
+      <% if @importacao.falhas > 0 %>
+        <div class="stat-item">
+          <span class="stat-label">⚠️ Falhas:</span>
+          <span class="stat-value error"><%= @importacao.falhas %></span>
+        </div>
+      <% end %>
+
+      <div class="stat-item">
+        <span class="stat-label">🕐 Data/Hora:</span>
+        <span class="stat-value" style="font-size: 14px;">
+          <%= l(@importacao.updated_at, format: :long) %>
+        </span>
+      </div>
+    </div>
+
+    <% if @importacao.falhas > 0 && @importacao.erros.present? %>
+      <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #856404;">⚠️ Alguns filmes não puderam ser importados:</h4>
+        <pre style="font-size: 12px; background: white; padding: 10px; border-radius: 4px; overflow-x: auto; color: #721c24;"><%= @importacao.erros %></pre>
+      </div>
+    <% end %>
+
+    <a href="<%= Rails.application.routes.url_helpers.root_url %>" class="button">
+      🎬 Ver Meus Filmes
+    </a>
+
+    <div class="footer">
+      <p>Este é um e-mail automático do sistema Cinelog.</p>
+      <p style="margin-top: 10px;">
+        <small>
+          Se você não solicitou esta importação, entre em contato conosco.
+        </small>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

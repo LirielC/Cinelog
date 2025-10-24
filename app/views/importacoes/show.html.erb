@@ -1,0 +1,370 @@
+<!-- Container de Status de Importação com W3.CSS -->
+<div class="w3-container w3-content" style="max-width:1000px; margin-top:20px; margin-bottom:80px;">
+  <div class="w3-card-4 w3-round w3-white">
+    <!-- Header do Card -->
+    <div class="w3-container w3-theme" style="padding: 24px;">
+      <h2 style="margin: 0;">
+        <i class="fa fa-upload"></i> <%= "Status da Importação" %> #<%= @importacao.id %>
+      </h2>
+    </div>
+
+    <!-- Corpo do Card -->
+    <div class="w3-container" style="padding: 32px;">
+      <!-- Status Badge -->
+      <div class="w3-panel <%= case @importacao.status
+                                 when 'pendente' then 'w3-pale-yellow'
+                                 when 'processando' then 'w3-pale-blue'
+                                 when 'concluido' then 'w3-pale-green'
+                                 when 'falha' then 'w3-pale-red'
+                                 end %> w3-round w3-center" style="padding: 16px; margin-bottom: 24px;">
+        <h3 style="margin: 0;">
+          <i class="fa <%= case @importacao.status
+                           when 'pendente' then 'fa-clock-o'
+                           when 'processando' then 'fa-spinner fa-spin'
+                           when 'concluido' then 'fa-check-circle'
+                           when 'falha' then 'fa-times-circle'
+                           end %>"></i>
+          <strong><%= t('activerecord.attributes.importacao.status') %>:</strong> 
+          <%= case @importacao.status
+              when 'pendente' then t('imports.status.pending', default: 'Pendente')
+              when 'processando' then t('imports.status.processing', default: 'Processando...')
+              when 'concluido' then t('imports.status.completed', default: 'Concluído')
+              when 'falha' then t('imports.status.failed', default: 'Falhou')
+              end %>
+        </h3>
+      </div>
+
+      <!-- Informações gerais -->
+      <div class="w3-row-padding" style="margin: 0 -8px 24px -8px;">
+        <div class="w3-half">
+          <div class="w3-card w3-round w3-pale-blue" style="padding: 16px;">
+            <p style="margin: 0; font-size: 0.9rem;" class="w3-text-grey">
+              <i class="fa fa-user"></i> <%= t('activerecord.attributes.importacao.usuario') %>:
+            </p>
+            <p style="margin: 8px 0 0 0; font-size: 1.2rem; font-weight: bold;">
+              <%= @importacao.usuario.email %>
+            </p>
+          </div>
+        </div>
+        <div class="w3-half">
+          <div class="w3-card w3-round w3-pale-blue" style="padding: 16px;">
+            <p style="margin: 0; font-size: 0.9rem;" class="w3-text-grey">
+              <i class="fa fa-calendar"></i> <%= "Data" %>:
+            </p>
+            <p style="margin: 8px 0 0 0; font-size: 1.2rem; font-weight: bold;">
+              <%= l @importacao.created_at, format: :long %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estatísticas (se processamento iniciou) -->
+      <% if @importacao.total_linhas %>
+        <h3 class="w3-text-theme" style="margin-bottom: 16px;">
+          <i class="fa fa-bar-chart"></i> <%= "Estatísticas" %>
+        </h3>
+        <div class="w3-row-padding" style="margin: 0 -8px 24px -8px;">
+          <div class="w3-quarter">
+            <div class="w3-card w3-round w3-green w3-center" style="padding: 24px;">
+              <h2 style="margin: 0; font-size: 2.5rem;"><%= @importacao.criados || 0 %></h2>
+              <p style="margin: 8px 0 0 0;"><%= "Filmes Criados" %></p>
+            </div>
+          </div>
+          <div class="w3-quarter">
+            <div class="w3-card w3-round w3-red w3-center" style="padding: 24px;">
+              <h2 style="margin: 0; font-size: 2.5rem;"><%= @importacao.falhas || 0 %></h2>
+              <p style="margin: 8px 0 0 0;"><%= "Falhas" %></p>
+            </div>
+          </div>
+          <div class="w3-quarter">
+            <div class="w3-card w3-round w3-blue w3-center" style="padding: 24px;">
+              <h2 style="margin: 0; font-size: 2.5rem;"><%= @importacao.total_linhas %></h2>
+              <p style="margin: 8px 0 0 0;"><%= "Total de Linhas" %></p>
+            </div>
+          </div>
+          <div class="w3-quarter">
+            <div class="w3-card w3-round w3-theme w3-center" style="padding: 24px;">
+              <h2 style="margin: 0; font-size: 2.5rem;"><%= @importacao.percentual_sucesso %>%</h2>
+              <p style="margin: 8px 0 0 0;"><%= "Taxa de Sucesso" %></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de progresso -->
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: <%= @importacao.percentual_sucesso %>%"></div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Erros (se houver) -->
+    <% if @importacao.erros.present? %>
+      <div class="errors-container">
+        <h3>Erros Encontrados</h3>
+        <pre class="errors-log"><%= @importacao.erros %></pre>
+      </div>
+    <% end %>
+
+    <!-- Mensagem de processamento -->
+    <% if @importacao.pendente? || @importacao.processando? %>
+      <div class="alert alert-warning">
+        <strong>⏳ Processando...</strong>
+        <br>
+        A importação está sendo processada. Recarregue esta página em alguns instantes para ver o resultado.
+        <br><br>
+        <%= button_to 'Recarregar', importacao_path(@importacao), method: :get, class: 'btn btn-sm btn-primary' %>
+      </div>
+    <% end %>
+
+    <!-- Ações -->
+    <div class="actions">
+      <%= link_to '← Voltar para filmes', root_path, class: 'btn btn-secondary' %>
+      <%= link_to 'Nova Importação', new_importacao_path, class: 'btn btn-success' %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card {
+    background: rgba(30, 30, 40, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  
+  .card-header h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  .status-badge {
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  
+  .status-badge.pendente {
+    background: rgba(255, 193, 7, 0.3);
+    border: 2px solid rgba(255, 193, 7, 0.7);
+    color: #ffd54f;
+  }
+  
+  .status-badge.processando {
+    background: rgba(13, 202, 240, 0.3);
+    border: 2px solid rgba(13, 202, 240, 0.7);
+    color: #4fc3f7;
+  }
+  
+  .status-badge.concluido {
+    background: rgba(39, 199, 121, 0.3);
+    border: 2px solid rgba(39, 199, 121, 0.7);
+    color: #66ffa6;
+  }
+  
+  .status-badge.falha {
+    background: rgba(220, 53, 69, 0.3);
+    border: 2px solid rgba(220, 53, 69, 0.7);
+    color: #ff6b6b;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .info-item {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .info-item .label {
+    color: #aaa;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .info-item .value {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .stats-container {
+    margin: 30px 0;
+  }
+  
+  .stats-container h3 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 20px;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .stat-card {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .stat-card.success {
+    background: rgba(39, 199, 121, 0.25);
+    border: 2px solid rgba(39, 199, 121, 0.6);
+  }
+  
+  .stat-card.danger {
+    background: rgba(220, 53, 69, 0.25);
+    border: 2px solid rgba(220, 53, 69, 0.6);
+  }
+  
+  .stat-card.info {
+    background: rgba(13, 202, 240, 0.25);
+    border: 2px solid rgba(13, 202, 240, 0.6);
+  }
+  
+  .stat-card.primary {
+    background: rgba(13, 110, 253, 0.25);
+    border: 2px solid rgba(13, 110, 253, 0.6);
+  }
+  
+  .stat-number {
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: #e0e0e0;
+    font-weight: 500;
+  }
+  
+  .progress-bar-container {
+    width: 100%;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #27c779, #20a361);
+    transition: width 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .errors-container {
+    margin: 30px 0;
+  }
+  
+  .errors-container h3 {
+    color: #ff6b6b;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+  
+  .errors-log {
+    background: rgba(220, 53, 69, 0.15);
+    border: 2px solid rgba(220, 53, 69, 0.4);
+    border-radius: 5px;
+    padding: 15px;
+    color: #ffcccc;
+    max-height: 400px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-size: 13px;
+  }
+  
+  .alert-warning {
+    background: rgba(255, 193, 7, 0.2);
+    border: 2px solid rgba(255, 193, 7, 0.5);
+    border-radius: 5px;
+    padding: 15px;
+    color: #ffd54f;
+    margin: 20px 0;
+  }
+  
+  .actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  
+  .btn-primary {
+    background: #27c779;
+    color: #fff;
+    border: 2px solid #27c779;
+  }
+  
+  .btn-primary:hover {
+    background: #20a361;
+    border-color: #20a361;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(39, 199, 121, 0.3);
+  }
+  
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+  }
+  
+  .btn-success {
+    background: #27c779;
+    color: #fff;
+    border: 2px solid #27c779;
+  }
+  
+  .btn-success:hover {
+    background: #20a361;
+    border-color: #20a361;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(39, 199, 121, 0.3);
+  }
+</style>

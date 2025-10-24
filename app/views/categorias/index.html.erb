@@ -1,0 +1,90 @@
+<div class="w3-container w3-content" style="max-width:1400px; margin-top:20px; margin-bottom:80px;">
+  
+  <!-- Header com Título e Botão -->
+  <div class="categorias-header">
+    <h2 class="w3-text-theme" style="margin: 0; font-size: 2rem;">
+      <i class="fa fa-tags"></i> Categorias de Filmes
+    </h2>
+    
+    <% if usuario_signed_in? && (current_usuario.admin? || current_usuario.moderador?) %>
+      <%= link_to new_categoria_path, class: 'w3-button w3-theme w3-round w3-hover-shadow', style: 'padding: 12px 24px;' do %>
+        <i class="fa fa-plus"></i> Nova Categoria
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Grid de Categorias -->
+  <% if @categorias.any? %>
+    <div class="categorias-grid">
+      <% @categorias.each do |categoria| %>
+        <div class="categoria-card">
+          <div class="categoria-card-header">
+            <div class="categoria-info">
+              <h3 class="categoria-nome">
+                <i class="fa fa-tag"></i> <%= categoria.nome %>
+              </h3>
+              <p class="categoria-count">
+                <%= categoria.filmes.count %> 
+                <%= categoria.filmes.count == 1 ? 'filme' : 'filmes' %>
+              </p>
+            </div>
+            
+            <% if usuario_signed_in? && (current_usuario.admin? || current_usuario.moderador?) %>
+              <div class="w3-dropdown-hover">
+                <button class="categoria-menu-btn">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <div class="w3-dropdown-content w3-bar-block w3-border w3-card-4" style="right:0; min-width: 150px;">
+                  <%= link_to edit_categoria_path(categoria), class: 'w3-bar-item w3-button w3-hover-light-grey' do %>
+                    <i class="fa fa-edit"></i> Editar
+                  <% end %>
+                  <%= button_to categoria_path(categoria), 
+                      method: :delete,
+                      data: { turbo_confirm: 'Tem certeza que deseja excluir esta categoria?' },
+                      class: 'w3-bar-item w3-button w3-hover-light-grey w3-text-red',
+                      style: 'text-align: left; width: 100%;' do %>
+                    <i class="fa fa-trash"></i> Excluir
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          
+          <!-- Lista de Filmes da Categoria (preview) -->
+          <% if categoria.filmes.limit(3).any? %>
+            <div class="categoria-filmes-preview">
+              <small class="w3-text-grey" style="font-weight: 600;">Filmes:</small>
+              <ul class="categoria-filmes-lista">
+                <% categoria.filmes.limit(3).each do |filme| %>
+                  <li>
+                    <%= link_to filme.titulo, filme_path(filme), class: 'w3-text-theme w3-hover-text-blue' %>
+                  </li>
+                <% end %>
+                <% if categoria.filmes.count > 3 %>
+                  <li class="w3-text-grey">
+                    + <%= categoria.filmes.count - 3 %> mais...
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="w3-panel w3-pale-blue w3-round w3-center" style="padding: 40px;">
+      <i class="fa fa-tags" style="font-size: 3rem; color: #999; margin-bottom: 16px;"></i>
+      <p style="margin: 0; font-size: 1.1rem; color: #666;">
+        Nenhuma categoria cadastrada ainda.
+      </p>
+      <% if usuario_signed_in? && (current_usuario.admin? || current_usuario.moderador?) %>
+        <p style="margin: 16px 0 0 0;">
+          <%= link_to new_categoria_path, class: 'w3-button w3-theme w3-round w3-margin-top' do %>
+            <i class="fa fa-plus"></i> Criar Primeira Categoria
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+
+</div>

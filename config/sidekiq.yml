@@ -1,0 +1,19 @@
+---
+:concurrency: 5
+:max_retries: 3
+:queues:
+  - default
+  - mailers
+  - importacoes
+
+# Configuração de produção
+production:
+  :concurrency: 10
+
+# Configuração de desenvolvimento
+development:
+  :concurrency: 3
+
+# Configuração de teste
+test:
+  :concurrency: 1

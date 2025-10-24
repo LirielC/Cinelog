@@ -1,0 +1,50 @@
+<%- if controller_name != 'sessions' %>
+  <p style="margin: 8px 0;">
+    <%= link_to new_session_path(resource_name), class: 'w3-text-theme w3-hover-text-green', style: 'text-decoration: none; font-size: 0.95rem;' do %>
+      <i class="fa fa-sign-in"></i> <%= "Entrar" %>
+    <% end %>
+  </p>
+<% end %>
+
+<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+  <p style="margin: 8px 0;">
+    <%= link_to new_registration_path(resource_name), class: 'w3-text-theme w3-hover-text-green', style: 'text-decoration: none; font-size: 0.95rem;' do %>
+      <i class="fa fa-user-plus"></i> <%= "Cadastrar" %>
+    <% end %>
+  </p>
+<% end %>
+
+<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+  <p style="margin: 8px 0;">
+    <%= link_to new_password_path(resource_name), class: 'w3-text-grey w3-hover-text-theme', style: 'text-decoration: none; font-size: 0.9rem;' do %>
+      <i class="fa fa-question-circle"></i> <%= "Esqueceu sua senha?" %>
+    <% end %>
+  </p>
+<% end %>
+
+<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+  <p style="margin: 8px 0;">
+    <%= link_to new_confirmation_path(resource_name), class: 'w3-text-grey w3-hover-text-theme', style: 'text-decoration: none; font-size: 0.9rem;' do %>
+      <i class="fa fa-envelope"></i> <%= t('devise_views.shared.links.confirmation_instructions') %>
+    <% end %>
+  </p>
+<% end %>
+
+<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+  <p style="margin: 8px 0;">
+    <%= link_to new_unlock_path(resource_name), class: 'w3-text-grey w3-hover-text-theme', style: 'text-decoration: none; font-size: 0.9rem;' do %>
+      <i class="fa fa-unlock"></i> <%= t('devise_views.shared.links.unlock_instructions') %>
+    <% end %>
+  </p>
+<% end %>
+
+<%- if devise_mapping.omniauthable? %>
+  <%- resource_class.omniauth_providers.each do |provider| %>
+    <%= button_to omniauth_authorize_path(resource_name, provider), 
+        data: { turbo: false },
+        class: 'w3-button w3-border w3-round w3-block',
+        style: 'margin-top: 16px; padding: 10px;' do %>
+      <i class="fa fa-sign-in"></i> Entrar com <%= OmniAuth::Utils.camelize(provider) %>
+    <% end %>
+  <% end %>
+<% end %>

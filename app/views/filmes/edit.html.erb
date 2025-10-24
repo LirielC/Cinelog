@@ -1,0 +1,20 @@
+<!-- Container com W3.CSS -->
+<div class="w3-container w3-content" style="max-width:900px; margin-top:20px; margin-bottom:80px;">
+  <div class="w3-card-4 w3-round w3-white">
+    <div class="w3-container w3-theme" style="padding: 24px;">
+      <h2 style="margin: 0;"><i class="fa fa-edit"></i> <%= "Editar Filme" %></h2>
+    </div>
+    <div class="w3-container" style="padding: 32px;">
+      <%= render 'form', filme: @filme %>
+    </div>
+  </div>
+  
+  <div style="margin-top: 24px;">
+    <%= link_to @filme, class: 'w3-button w3-white w3-border w3-round w3-margin-right' do %>
+      <i class="fa fa-arrow-left"></i> <%= "Voltar para filme" %>
+    <% end %>
+    <%= link_to filmes_path, class: 'w3-button w3-white w3-border w3-round' do %>
+      <i class="fa fa-list"></i> <%= "Ver lista" %>
+    <% end %>
+  </div>
+</div>

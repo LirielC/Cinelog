@@ -1,0 +1,31 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("PGHOST", "localhost") %>
+  port: <%= ENV.fetch("PGPORT", 5434) %>
+  username: <%= ENV.fetch("PGUSER", "postgres") %>
+  password: <%= ENV.fetch("PGPASSWORD", "12345") %>
+
+development:
+  <<: *default
+  host: localhost
+  port: 5434
+  username: postgres
+  password: 12345
+  database: catalogo_filmes_development
+
+test:
+  <<: *default
+  host: localhost
+  port: 5434
+  username: postgres
+  password: 12345
+  database: catalogo_filmes_test
+
+production:
+  <<: *default
+  database: catalogo_filmes_production
+  username: catalogo_filmes
+  password: <%= ENV["CATALOGO_FILMES_DATABASE_PASSWORD"] %>
+

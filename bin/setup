@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Instalando gems..."
+bundle install
+
+echo "Criando banco..."
+bin/rails db:create db:migrate db:seed
+
+echo "Pronto. Rode bin/rails server para iniciar a aplicação."

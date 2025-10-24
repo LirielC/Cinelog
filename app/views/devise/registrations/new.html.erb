@@ -1,0 +1,54 @@
+<!-- Container de Registro Centralizado com Design Moderno -->
+<div class="w3-container" style="margin-top: 80px; margin-bottom: 100px; display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+  <div class="login-container">
+    
+    <!-- Título -->
+    <div class="login-heading">
+      <i class="fa fa-user-plus" style="font-size: 2.5rem; margin-bottom: 10px; color: rgb(16, 137, 211);"></i>
+      <div>Criar Conta</div>
+    </div>
+
+    <!-- Formulário de Registro -->
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'login-form' }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <!-- Campo Nome -->
+      <%= f.text_field :nome, 
+          autofocus: true, 
+          autocomplete: "name",
+          required: true,
+          class: 'login-input',
+          placeholder: 'Nome completo' %>
+
+      <!-- Campo Email -->
+      <%= f.email_field :email, 
+          autocomplete: "email",
+          required: true,
+          class: 'login-input',
+          placeholder: 'E-mail' %>
+
+      <!-- Campo Senha -->
+      <%= f.password_field :password, 
+          autocomplete: "new-password",
+          required: true,
+          class: 'login-input',
+          placeholder: "Senha#{@minimum_password_length ? " (mínimo #{@minimum_password_length} caracteres)" : ''}" %>
+
+      <!-- Campo Confirmação de Senha -->
+      <%= f.password_field :password_confirmation, 
+          autocomplete: "new-password",
+          required: true,
+          class: 'login-input',
+          placeholder: 'Confirmar senha' %>
+
+      <!-- Botão de Submit -->
+      <%= f.submit "Cadastrar", class: 'login-button' %>
+      
+    <% end %>
+
+    <!-- Links Adicionais -->
+    <div class="login-agreement">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

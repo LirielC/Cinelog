@@ -1,0 +1,59 @@
+<!-- Container de Login Centralizado com Design Moderno -->
+<div class="w3-container" style="margin-top: 80px; margin-bottom: 100px; display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+  <div class="login-container">
+    
+    <!-- Título -->
+    <div class="login-heading">
+      <i class="fa fa-film" style="font-size: 2.5rem; margin-bottom: 10px; color: rgb(16, 137, 211);"></i>
+      <div>Entrar no Cinelog</div>
+    </div>
+
+    <!-- Formulário de Login -->
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'login-form' }) do |f| %>
+      
+      <!-- Campo Email -->
+      <%= f.email_field :email, 
+          autofocus: true, 
+          autocomplete: "email",
+          required: true,
+          class: 'login-input',
+          placeholder: 'E-mail' %>
+
+      <!-- Campo Senha -->
+      <%= f.password_field :password, 
+          autocomplete: "current-password",
+          required: true,
+          class: 'login-input',
+          placeholder: 'Senha' %>
+
+      <!-- Link Esqueceu Senha -->
+      <% if devise_mapping.recoverable? %>
+        <span class="forgot-password">
+          <%= link_to "Esqueceu a senha?", new_password_path(resource_name) %>
+        </span>
+      <% end %>
+
+      <!-- Checkbox Lembrar-me -->
+      <% if devise_mapping.rememberable? %>
+        <div style="margin-top: 15px; margin-left: 10px;">
+          <label style="display: flex; align-items: center; cursor: pointer;">
+            <%= f.check_box :remember_me, style: 'margin-right: 8px;' %>
+            <span style="color: rgb(100, 100, 100); font-size: 14px;">
+              Lembrar de mim
+            </span>
+          </label>
+        </div>
+      <% end %>
+
+
+      <!-- Botão de Submit -->
+      <%= f.submit "Entrar", class: 'login-button' %>
+      
+    <% end %>
+
+    <!-- Links Adicionais -->
+    <div class="login-agreement">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

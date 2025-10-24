@@ -1,0 +1,68 @@
+<!-- Container de Importação com W3.CSS -->
+<div class="w3-container w3-content" style="max-width:900px; margin-top:20px; margin-bottom:80px;">
+  <div class="w3-card-4 w3-round w3-white">
+    <!-- Header do Card -->
+    <div class="w3-container w3-theme" style="padding: 24px;">
+      <h2 style="margin: 0;">
+        <i class="fa fa-upload"></i> <%= "Importar Filmes via CSV" %>
+      </h2>
+    </div>
+
+    <!-- Corpo do Card -->
+    <div class="w3-container" style="padding: 32px;">
+      <p class="w3-text-grey" style="margin-bottom: 24px;">
+        <%= "Faça upload de um arquivo CSV para importar vários filmes de uma vez." %>
+      </p>
+      
+      <!-- Instruções de Formato -->
+      <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="padding: 16px; margin-bottom: 24px;">
+        <h4 style="margin: 0 0 12px 0;">
+          <i class="fa fa-info-circle"></i> <%= "Formato esperado" %>:
+        </h4>
+        <p style="margin: 8px 0;">
+          <%= "O arquivo CSV deve conter as seguintes colunas (na primeira linha)" %>:
+        </p>
+        <code style="display: block; background: #f5f5f5; padding: 8px; border-radius: 4px; margin: 8px 0; font-size: 0.9rem;">
+          titulo,sinopse,ano_lancamento,duracao_minutos,diretor,categorias
+        </code>
+        
+        <h5 style="margin: 16px 0 8px 0;">
+          <i class="fa fa-file-code-o"></i> <%= "Exemplo" %>:
+        </h5>
+        <pre style="background: #2d2d2d; color: #f8f8f2; padding: 12px; border-radius: 4px; overflow-x: auto; font-size: 0.85rem; margin: 0;">titulo,sinopse,ano_lancamento,duracao_minutos,diretor,categorias
+Matrix,Um hacker descobre a realidade,1999,136,Wachowski,Ação,Ficção
+Interestelar,Exploradores atravessam um buraco de minhoca,2014,169,Christopher Nolan,Ficção,Drama</pre>
+        
+        <div style="margin-top: 16px; font-size: 0.9rem;">
+          <p style="margin: 4px 0;"><i class="fa fa-check-circle w3-text-green"></i> Categorias podem ser separadas por vírgula (serão criadas automaticamente se não existirem)</p>
+          <p style="margin: 4px 0;"><i class="fa fa-check-circle w3-text-green"></i> Tamanho máximo: 5MB</p>
+          <p style="margin: 4px 0;"><i class="fa fa-check-circle w3-text-green"></i> Codificação: UTF-8</p>
+        </div>
+      </div>
+
+      <!-- Formulário de Upload -->
+      <%= form_with model: @importacao, url: importacoes_path, local: true, html: { multipart: true } do |f| %>
+        <div class="w3-margin-bottom">
+          <%= f.label :arquivo, t('imports.select_file', default: 'Selecionar arquivo CSV'), class: 'w3-text-grey' %>
+          <%= f.file_field :arquivo, 
+              accept: '.csv', 
+              required: true, 
+              class: 'w3-input w3-border w3-round',
+              style: 'padding: 12px; margin-top: 8px;' %>
+        </div>
+
+        <div style="margin-top: 24px; display: flex; gap: 12px;">
+          <%= f.submit t('actions.import', default: 'Importar'), 
+              class: 'w3-button w3-theme w3-round',
+              style: 'padding: 12px 32px;' %>
+          <%= link_to t('actions.cancel', default: 'Cancelar'), 
+              root_path, 
+              class: 'w3-button w3-white w3-border w3-round',
+              style: 'padding: 12px 32px;' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+

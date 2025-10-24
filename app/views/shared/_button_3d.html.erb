@@ -1,0 +1,35 @@
+<%# Botão 3D com efeito hover em azul
+  Uso: <%= render 'shared/button_3d', url: filme_path(@filme), text: 'Ver Filme' %>
+  Ou com link_to: <%= link_to filme_path(@filme), class: 'no-style' do %>
+                    <%= render 'shared/button_3d', text: 'Ver Filme' %>
+                  <% end %>
+%>
+
+<% 
+  text ||= "Hover"
+  url ||= nil
+%>
+
+<% if url.present? %>
+  <%= link_to url, style: 'text-decoration: none;' do %>
+    <div class="container-button">
+      <div class="hover bt-1"></div>
+      <div class="hover bt-2"></div>
+      <div class="hover bt-3"></div>
+      <div class="hover bt-4"></div>
+      <div class="hover bt-5"></div>
+      <div class="hover bt-6"></div>
+      <button class="button-3d" type="button"></button>
+    </div>
+  <% end %>
+<% else %>
+  <div class="container-button">
+    <div class="hover bt-1"></div>
+    <div class="hover bt-2"></div>
+    <div class="hover bt-3"></div>
+    <div class="hover bt-4"></div>
+    <div class="hover bt-5"></div>
+    <div class="hover bt-6"></div>
+    <button class="button-3d" type="button"></button>
+  </div>
+<% end %>

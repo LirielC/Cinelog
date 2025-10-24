@@ -1,0 +1,80 @@
+/* Fixes specific to streams page layout */
+
+/* Ensure page content has room and consistent padding */
+body .page-content {
+  margin-top: 90px; /* slightly less to avoid overlap with header */
+  padding: 40px;    /* tighter so elements fit */
+}
+
+/* Center featured carousel arrows vertically and keep them outside the white card */
+.featured-games {
+  position: relative;
+}
+.featured-games .owl-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -18px; /* move outside the container so it doesn't overlay content */
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+
+.featured-games .owl-nav .owl-prev,
+.featured-games .owl-nav .owl-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.featured-games .owl-nav .owl-prev span,
+.featured-games .owl-nav .owl-next span {
+  font-size: 18px;
+  color: #2f2f2f;
+}
+
+/* Make sure featured thumb image and details align nicely */
+.featured-games .item {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.featured-games .item .thumb {
+  flex: 0 0 260px;
+  max-width: 260px;
+}
+.featured-games .item h4 {
+  margin: 0 0 12px 0;
+}
+
+/* Search input fixes to avoid translation spans overlaying */
+.header-area .main-nav #search {
+  min-width: 260px;
+  max-width: 420px;
+}
+.header-area .main-nav #search input {
+  padding-left: 48px; /* keep icon visible */
+  width: 100%;
+  color: #333;
+}
+.header-area .main-nav #search i {
+  color: #999;
+}
+
+/* Fix small-screen header overlap */
+@media (max-width: 992px) {
+  .featured-games .owl-nav { right: 8px; top: -30px; transform: none; }
+  .featured-games .owl-nav .owl-prev, .featured-games .owl-nav .owl-next { width: 40px; height: 40px; }
+  body .page-content { margin-top: 100px; padding: 24px; }
+}
+
+/* General clean-up: ensure lists and headings don't overflow */
+.featured-games .item ul { margin-top: 6px; }
+
+/* Prevent any translation span (from i18n missing) from being absolutely positioned on top */
+.translation_missing { display: inline-block !important; }

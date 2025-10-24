@@ -1,0 +1,193 @@
+<!-- Header Moderno com Tailwind Style -->
+<header class="modern-header">
+  <div class="header-container">
+    <!-- Logo Cinelog (mantido original) -->
+    <div class="header-logo">
+      <%= link_to root_path, class: "logo-link" do %>
+        <i class="fa fa-film"></i>
+        <span class="logo-text">Cinelog</span>
+      <% end %>
+    </div>
+    
+    <!-- Menu Desktop (estilo Tailwind) -->
+    <nav class="header-nav" aria-label="Global">
+      <%= link_to root_path, class: "nav-link" do %>
+        <i class="fa fa-home"></i>
+        <span>Início</span>
+      <% end %>
+      
+      <%= link_to categorias_path, class: "nav-link" do %>
+        <i class="fa fa-tags"></i>
+        <span>Categorias</span>
+      <% end %>
+      
+      <% if usuario_signed_in? %>
+        <%= link_to new_filme_path, class: "nav-link" do %>
+          <i class="fa fa-plus-circle"></i>
+          <span>Adicionar</span>
+        <% end %>
+        
+        <%= link_to new_importacao_path, class: "nav-link" do %>
+          <i class="fa fa-upload"></i>
+          <span>Importar</span>
+        <% end %>
+        
+        <% if current_usuario.admin? || current_usuario.moderador? %>
+          <%= link_to new_categoria_path, class: "nav-link" do %>
+            <i class="fa fa-folder-open"></i>
+            <span>Nova Categoria</span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </nav>
+    
+    <!-- Ações do Usuário (estilo Tailwind + Cinelog) -->
+    <div class="header-actions">
+      <% if usuario_signed_in? %>
+        <div class="user-menu">
+          <button class="user-menu-btn" onclick="toggleUserMenu()" aria-label="Menu do usuário">
+            <i class="fa fa-user-circle"></i>
+            <span class="user-name"><%= current_usuario.nome %></span>
+            <i class="fa fa-chevron-down chevron-icon"></i>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <%= link_to edit_usuario_registration_path, class: "dropdown-item" do %>
+              <i class="fa fa-edit"></i>
+              <span>Editar Perfil</span>
+            <% end %>
+            <%= button_to destroy_usuario_session_path, method: :delete, class: "dropdown-item logout", form: { style: 'display: inline; width: 100%;' } do %>
+              <i class="fa fa-sign-out"></i>
+              <span>Sair</span>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <div class="auth-buttons">
+          <%= link_to new_usuario_session_path, class: "header-btn btn-login" do %>
+            <i class="fa fa-sign-in"></i>
+            <span>Entrar</span>
+          <% end %>
+          <%= link_to new_usuario_registration_path, class: "header-btn btn-register" do %>
+            <i class="fa fa-user-plus"></i>
+            <span>Cadastrar</span>
+          <% end %>
+        </div>
+      <% end %>
+      
+      <!-- Botão Menu Mobile -->
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu mobile">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Menu Mobile (estilo Tailwind) -->
+  <div class="mobile-menu" id="mobileMenu">
+    <%= link_to root_path, class: "mobile-menu-item" do %>
+      <i class="fa fa-home"></i>
+      <span>Início</span>
+    <% end %>
+    
+    <%= link_to categorias_path, class: "mobile-menu-item" do %>
+      <i class="fa fa-tags"></i>
+      <span>Categorias</span>
+    <% end %>
+    
+    <% if usuario_signed_in? %>
+      <%= link_to new_filme_path, class: "mobile-menu-item" do %>
+        <i class="fa fa-plus-circle"></i>
+        <span>Adicionar Filme</span>
+      <% end %>
+      
+      <%= link_to new_importacao_path, class: "mobile-menu-item" do %>
+        <i class="fa fa-upload"></i>
+        <span>Importar CSV</span>
+      <% end %>
+      
+      <% if current_usuario.admin? || current_usuario.moderador? %>
+        <%= link_to new_categoria_path, class: "mobile-menu-item" do %>
+          <i class="fa fa-folder-open"></i>
+          <span>Nova Categoria</span>
+        <% end %>
+      <% end %>
+      
+      <%= link_to edit_usuario_registration_path, class: "mobile-menu-item" do %>
+        <i class="fa fa-edit"></i>
+        <span>Editar Perfil</span>
+      <% end %>
+      
+      <%= button_to destroy_usuario_session_path, method: :delete, class: "mobile-menu-item logout", form: { style: 'display: inline; width: 100%;' } do %>
+        <i class="fa fa-sign-out"></i>
+        <span>Sair</span>
+      <% end %>
+    <% else %>
+      <%= link_to new_usuario_session_path, class: "mobile-menu-item" do %>
+        <i class="fa fa-sign-in"></i>
+        <span>Entrar</span>
+      <% end %>
+      
+      <%= link_to new_usuario_registration_path, class: "mobile-menu-item" do %>
+        <i class="fa fa-user-plus"></i>
+        <span>Cadastrar</span>
+      <% end %>
+    <% end %>
+  </div>
+</header>
+
+<!-- Scripts do Header -->
+<script>
+function toggleUserMenu() {
+  const dropdown = document.getElementById('userDropdown');
+  const userMenu = document.querySelector('.user-menu');
+  
+  dropdown.classList.toggle('show');
+  userMenu.classList.toggle('active');
+}
+
+function toggleMobileMenu() {
+  const mobileMenu = document.getElementById('mobileMenu');
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  
+  mobileMenu.classList.toggle('show');
+  menuBtn.classList.toggle('active');
+  
+  // Opcional: bloquear scroll do body quando menu mobile aberto
+  if (mobileMenu.classList.contains('show')) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+// Fechar dropdown ao clicar fora
+document.addEventListener('click', function(event) {
+  const userMenu = event.target.closest('.user-menu');
+  const dropdown = document.getElementById('userDropdown');
+  
+  if (!userMenu && dropdown && dropdown.classList.contains('show')) {
+    dropdown.classList.remove('show');
+    document.querySelector('.user-menu')?.classList.remove('active');
+  }
+  
+  // Fechar menu mobile ao clicar fora
+  const mobileMenuBtn = event.target.closest('.mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileMenuItem = event.target.closest('.mobile-menu-item');
+  
+  if (!mobileMenuBtn && !mobileMenuItem && mobileMenu && mobileMenu.classList.contains('show')) {
+    mobileMenu.classList.remove('show');
+    document.querySelector('.mobile-menu-btn')?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});
+
+// Fechar menu mobile ao clicar em um item
+document.querySelectorAll('.mobile-menu-item').forEach(item => {
+  item.addEventListener('click', function() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenu.classList.remove('show');
+    document.querySelector('.mobile-menu-btn')?.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+});
+</script>

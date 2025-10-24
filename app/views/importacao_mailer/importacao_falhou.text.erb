@@ -1,0 +1,25 @@
+Olá <%= @usuario.nome %>,
+
+❌ ERRO NA IMPORTAÇÃO DE FILMES
+
+Infelizmente, ocorreu um erro ao processar sua importação de filmes.
+Nenhum filme foi adicionado à sua biblioteca.
+
+🔍 DETALHES DO ERRO:
+========================
+<%= @importacao.erros %>
+
+💡 COMO RESOLVER:
+========================
+- Verifique se o arquivo CSV está no formato correto
+- Certifique-se de que as colunas obrigatórias estão presentes: 
+  titulo, sinopse, ano_lancamento, duracao_minutos, diretor, categorias
+- Verifique se o arquivo não está corrompido
+- Confirme que o tamanho do arquivo não excede 5MB
+- Use codificação UTF-8 no arquivo
+
+Tente novamente: <%= Rails.application.routes.url_helpers.new_importacao_url %>
+
+---
+Este é um e-mail automático do sistema Cinelog.
+Se precisar de ajuda, entre em contato com o suporte.

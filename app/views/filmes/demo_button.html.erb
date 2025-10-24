@@ -1,0 +1,141 @@
+<!-- Página de Demonstração dos Botões 3D -->
+<div class="w3-container" style="margin-top: 80px; padding: 40px;">
+  
+  <div class="w3-center w3-margin-bottom">
+    <h1 class="w3-text-theme">
+      <i class="fa fa-cube"></i> Demonstração Botão 3D
+    </h1>
+    <p class="w3-text-grey">Passe o mouse sobre o botão em diferentes áreas para ver o efeito 3D</p>
+  </div>
+
+  <!-- Grid de demonstração -->
+  <div class="w3-row-padding w3-margin-top">
+    
+    <!-- Botão Individual -->
+    <div class="w3-col s12 m6 l4 w3-margin-bottom">
+      <div class="w3-card-4 w3-white w3-round" style="padding: 40px; min-height: 300px;">
+        <h3 class="w3-text-theme w3-center">Botão Simples</h3>
+        <p class="w3-center w3-text-grey w3-small">Efeito básico 3D com hover</p>
+        <div class="w3-center" style="margin-top: 60px;">
+          <div class="container-button">
+            <div class="hover bt-1"></div>
+            <div class="hover bt-2"></div>
+            <div class="hover bt-3"></div>
+            <div class="hover bt-4"></div>
+            <div class="hover bt-5"></div>
+            <div class="hover bt-6"></div>
+            <button class="button-3d" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão com Link -->
+    <div class="w3-col s12 m6 l4 w3-margin-bottom">
+      <div class="w3-card-4 w3-white w3-round" style="padding: 40px; min-height: 300px;">
+        <h3 class="w3-text-theme w3-center">Com Link</h3>
+        <p class="w3-center w3-text-grey w3-small">Clicável - vai para página inicial</p>
+        <div class="w3-center" style="margin-top: 60px;">
+          <%= link_to root_path, style: 'text-decoration: none; display: inline-block;' do %>
+            <div class="container-button">
+              <div class="hover bt-1"></div>
+              <div class="hover bt-2"></div>
+              <div class="hover bt-3"></div>
+              <div class="hover bt-4"></div>
+              <div class="hover bt-5"></div>
+              <div class="hover bt-6"></div>
+              <button class="button-3d" type="button"></button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão com Ação -->
+    <div class="w3-col s12 m6 l4 w3-margin-bottom">
+      <div class="w3-card-4 w3-white w3-round" style="padding: 40px; min-height: 300px;">
+        <h3 class="w3-text-theme w3-center">Com JavaScript</h3>
+        <p class="w3-center w3-text-grey w3-small">Clique para testar ação</p>
+        <div class="w3-center" style="margin-top: 60px;">
+          <div class="container-button" onclick="alert('Botão 3D clicado! 🎉')">
+            <div class="hover bt-1"></div>
+            <div class="hover bt-2"></div>
+            <div class="hover bt-3"></div>
+            <div class="hover bt-4"></div>
+            <div class="hover bt-5"></div>
+            <div class="hover bt-6"></div>
+            <button class="button-3d" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Instruções de Uso -->
+  <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue" style="margin-top: 40px;">
+    <h3><i class="fa fa-info-circle"></i> Como Usar</h3>
+    <p><strong>1. Botão Simples:</strong></p>
+    <pre class="w3-code" style="background: #f5f5f5; padding: 15px; border-radius: 8px;">
+&lt;div class="container-button"&gt;
+  &lt;div class="hover bt-1"&gt;&lt;/div&gt;
+  &lt;div class="hover bt-2"&gt;&lt;/div&gt;
+  &lt;div class="hover bt-3"&gt;&lt;/div&gt;
+  &lt;div class="hover bt-4"&gt;&lt;/div&gt;
+  &lt;div class="hover bt-5"&gt;&lt;/div&gt;
+  &lt;div class="hover bt-6"&gt;&lt;/div&gt;
+  &lt;button class="button-3d" type="button"&gt;&lt;/button&gt;
+&lt;/div&gt;
+    </pre>
+
+    <p style="margin-top: 20px;"><strong>2. Com Link Rails:</strong></p>
+    <pre class="w3-code" style="background: #f5f5f5; padding: 15px; border-radius: 8px;">
+&lt;%= link_to filme_path(@filme), style: 'text-decoration: none;' do %&gt;
+  &lt;div class="container-button"&gt;
+    &lt;!-- ... divs hover ... --&gt;
+    &lt;button class="button-3d" type="button"&gt;&lt;/button&gt;
+  &lt;/div&gt;
+&lt;% end %&gt;
+    </pre>
+
+    <p style="margin-top: 20px;"><strong>3. Efeitos do Hover:</strong></p>
+    <ul>
+      <li><strong>Cantos superiores:</strong> Rotação positiva em X</li>
+      <li><strong>Cantos inferiores:</strong> Rotação negativa em X</li>
+      <li><strong>Esquerda:</strong> Rotação negativa em Y</li>
+      <li><strong>Direita:</strong> Rotação positiva em Y</li>
+      <li><strong>Centro:</strong> Mostra "Click" e remove fundo</li>
+    </ul>
+  </div>
+
+  <!-- Cores Utilizadas -->
+  <div class="w3-panel w3-pale-yellow w3-leftbar w3-border-yellow" style="margin-top: 20px;">
+    <h3><i class="fa fa-paint-brush"></i> Paleta de Cores Azul</h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
+      <div>
+        <div style="width: 80px; height: 80px; background: #1976d2; border-radius: 8px; border: 2px solid #333;"></div>
+        <p class="w3-small w3-center"><strong>#1976d2</strong><br>Borda</p>
+      </div>
+      <div>
+        <div style="width: 80px; height: 80px; background: #2196f3; border-radius: 8px; border: 2px solid #333;"></div>
+        <p class="w3-small w3-center"><strong>#2196f3</strong><br>Fundo</p>
+      </div>
+      <div>
+        <div style="width: 80px; height: 80px; background: #0d47a1; border-radius: 8px; border: 2px solid #333;"></div>
+        <p class="w3-small w3-center"><strong>#0d47a1</strong><br>Sombra</p>
+      </div>
+      <div>
+        <div style="width: 80px; height: 80px; background: #ffffff; border-radius: 8px; border: 2px solid #333;"></div>
+        <p class="w3-small w3-center"><strong>#ffffff</strong><br>Texto</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voltar -->
+  <div class="w3-center" style="margin-top: 40px;">
+    <%= link_to root_path, class: "w3-button w3-theme w3-round w3-large" do %>
+      <i class="fa fa-arrow-left"></i> Voltar para Início
+    <% end %>
+  </div>
+
+</div>
