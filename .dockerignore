@@ -1,0 +1,15 @@
+.git
+.gitignore
+log/*
+tmp/*
+*.log
+.env
+.env.*
+node_modules/
+storage/*
+public/packs
+public/packs-test
+coverage/
+spec/
+test/
+README.md

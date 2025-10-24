@@ -10,3 +10,5 @@
 /storage
 .env
 /.bundle
+
+/config/master.key
