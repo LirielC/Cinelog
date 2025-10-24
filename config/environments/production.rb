@@ -77,13 +77,19 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'cinelog.com'), protocol: 'https' }
 
   # Configure mailer to use SendGrid, Mailgun, or another service
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: ENV.fetch('SMTP_ADDRESS', 'smtp.sendgrid.net'),
-    port: ENV.fetch('SMTP_PORT', 587),
-    user_name: ENV.fetch('SMTP_USERNAME'),
-    password: ENV.fetch('SMTP_PASSWORD'),
-    authentication: :plain,
-    enable_starttls_auto: true
-  }
+  # SMTP configurado apenas se as variáveis estiverem presentes
+  if ENV['SMTP_USERNAME'].present? && ENV['SMTP_PASSWORD'].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
+      port: ENV.fetch('SMTP_PORT', 587),
+      user_name: ENV['SMTP_USERNAME'],
+      password: ENV['SMTP_PASSWORD'],
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
+  else
+    # Se não tiver SMTP configurado, não enviar emails (modo teste)
+    config.action_mailer.delivery_method = :test
+  end
 end
