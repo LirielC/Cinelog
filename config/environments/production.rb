@@ -79,24 +79,14 @@ Rails.application.configure do
   # Devise mailer configuration - set your production host
   config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'cinelog-snoo.onrender.com'), protocol: 'https' }
 
-  # Email delivery via SMTP (Brevo/Sendinblue - funciona no Render!)
-  # Plano gratuito: 300 emails/dia
-  if ENV['BREVO_SMTP_KEY'].present?
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = {
-      address: 'smtp-relay.brevo.com',
-      port: 587,
-      user_name: ENV['BREVO_SMTP_LOGIN'],
-      password: ENV['BREVO_SMTP_KEY'],
-      authentication: :plain,
-      enable_starttls_auto: true
-    }
-  elsif ENV['RESEND_API_KEY'].present?
-    # Fallback: Resend (mas só funciona com domínio verificado)
-    require Rails.root.join('lib', 'resend_delivery')
-    config.action_mailer.delivery_method = ResendDelivery
+  # Email delivery via SendGrid API HTTP (funciona no Render!)
+  # SendGrid: 100 emails/dia GRATUITOS permanentemente
+  if ENV['SENDGRID_API_KEY'].present?
+    require Rails.root.join('lib', 'sendgrid_delivery')
+    config.action_mailer.delivery_method = SendgridDelivery
   else
     # Sem configuração de email
     config.action_mailer.delivery_method = :test
+    Rails.logger.warn "⚠️  Email não configurado. Configure SENDGRID_API_KEY no Render"
   end
 end

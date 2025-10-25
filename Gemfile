@@ -22,8 +22,8 @@ gem 'pg_search'
 # HTTP client
 gem 'httparty'
 
-# Email delivery via API (Resend)
-gem 'resend', '~> 0.10'
+# Email delivery via SendGrid API (100 emails/dia gratuitos - funciona no Render)
+gem 'sendgrid-ruby'
 
 # Testes e qualidade
 group :development, :test do

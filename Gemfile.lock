@@ -246,8 +246,6 @@ GEM
     regexp_parser (2.11.3)
     reline (0.6.2)
       io-console (~> 0.5)
-    resend (0.26.0)
-      httparty (>= 0.21.0)
     responders (3.2.0)
       actionpack (>= 7.0)
       railties (>= 7.0)
@@ -287,6 +285,7 @@ GEM
     ruby-vips (2.2.5)
       ffi (~> 1.12)
       logger
+    ruby_http_client (3.5.5)
     rubyzip (3.2.0)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -301,6 +300,8 @@ GEM
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
+    sendgrid-ruby (6.7.0)
+      ruby_http_client (~> 3.4)
     shoulda-matchers (6.5.0)
       activesupport (>= 5.2.0)
     spring (4.4.0)
@@ -360,10 +361,10 @@ DEPENDENCIES
   pundit
   pundit-matchers (~> 3.1)
   rails (~> 7.0)
-  resend (~> 0.10)
   rspec-rails
   rubocop
   sassc-rails
+  sendgrid-ruby
   shoulda-matchers (~> 6.0)
   spring
   spring-watcher-listen
