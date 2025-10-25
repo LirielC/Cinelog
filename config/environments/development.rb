@@ -51,9 +51,12 @@ Rails.application.configure do
     password:             ENV['SMTP_PASSWORD'],
     authentication:       'plain',
     enable_starttls_auto: true,
-    open_timeout:         5,
-    read_timeout:         5
+    open_timeout:         10,
+    read_timeout:         10
   }
+  
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
 
   # Devise mailer configuration
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }

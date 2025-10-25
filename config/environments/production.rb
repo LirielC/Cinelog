@@ -79,24 +79,30 @@ Rails.application.configure do
   # Devise mailer configuration - set your production host
   config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'cinelog.com'), protocol: 'https' }
 
-  # Configure mailer to use SendGrid, Mailgun, or another service
-  # SMTP configurado apenas se as variáveis estiverem presentes
-  if ENV['SMTP_USERNAME'].present? && ENV['SMTP_PASSWORD'].present?
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = {
-      address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
-      port: ENV.fetch('SMTP_PORT', 465),
-      user_name: ENV['SMTP_USERNAME'],
-      password: ENV['SMTP_PASSWORD'],
-      authentication: :plain,
-      enable_starttls_auto: true,
-      ssl: true,
-      tls: true,
-      open_timeout: 10,
-      read_timeout: 10
-    }
+  # Email delivery via Resend API (funciona no Render sem portas SMTP bloqueadas)
+  if ENV['RESEND_API_KEY'].present?
+    require Rails.root.join('lib', 'resend_delivery')
+    config.action_mailer.delivery_method = ResendDelivery
+    config.action_mailer.resend_delivery_settings = {}
   else
-    # Se não tiver SMTP configurado, não enviar emails (modo teste)
-    config.action_mailer.delivery_method = :test
+    # Fallback: tentar SMTP se configurado
+    if ENV['SMTP_USERNAME'].present? && ENV['SMTP_PASSWORD'].present?
+      config.action_mailer.delivery_method = :smtp
+      config.action_mailer.smtp_settings = {
+        address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
+        port: ENV.fetch('SMTP_PORT', 465),
+        user_name: ENV['SMTP_USERNAME'],
+        password: ENV['SMTP_PASSWORD'],
+        authentication: :plain,
+        enable_starttls_auto: true,
+        ssl: true,
+        tls: true,
+        open_timeout: 10,
+        read_timeout: 10
+      }
+    else
+      # Se não tiver nada configurado, não enviar emails (modo teste)
+      config.action_mailer.delivery_method = :test
+    end
   end
 end

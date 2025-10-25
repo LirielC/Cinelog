@@ -22,6 +22,9 @@ gem 'pg_search'
 # HTTP client
 gem 'httparty'
 
+# Email delivery via API (Resend)
+gem 'resend', '~> 0.10'
+
 # Testes e qualidade
 group :development, :test do
   gem 'rspec-rails'
@@ -40,6 +43,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'webdrivers'
+  gem 'letter_opener_web', '~> 2.0'  # Preview emails no navegador
 end
 
 gem 'sprockets-rails'
