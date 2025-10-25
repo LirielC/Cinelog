@@ -24,9 +24,20 @@ class SendgridDelivery
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
     response = sg.client.mail._('send').post(request_body: mail_obj.to_json)
     
-    # Log do resultado
-    Rails.logger.info "📧 Email enviado via SendGrid: #{response.status_code}"
+    # Log detalhado do resultado
+    if response.status_code.to_i >= 200 && response.status_code.to_i < 300
+      Rails.logger.info "✅ Email enviado com sucesso via SendGrid: #{response.status_code}"
+    else
+      Rails.logger.error "❌ Erro ao enviar email via SendGrid:"
+      Rails.logger.error "   Status: #{response.status_code}"
+      Rails.logger.error "   Body: #{response.body}"
+      Rails.logger.error "   Headers: #{response.headers}"
+    end
     
     response
+  rescue => e
+    Rails.logger.error "❌ Exceção ao enviar email: #{e.class} - #{e.message}"
+    Rails.logger.error e.backtrace.first(5).join("\n")
+    raise
   end
 end
