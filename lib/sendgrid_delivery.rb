@@ -8,16 +8,25 @@ class SendgridDelivery
     return unless ENV['SENDGRID_API_KEY'].present?
 
     require 'sendgrid-ruby'
-    include SendGrid
-
-    from = Email.new(email: mail.from.first)
-    to = Email.new(email: mail.to.first)
+    
+    # Criar objetos SendGrid
+    from = SendGrid::Email.new(email: mail.from.first)
+    to = SendGrid::Email.new(email: mail.to.first)
     subject = mail.subject
-    content = Content.new(type: 'text/html', value: mail.html_part&.body&.to_s || mail.body.to_s)
+    content = SendGrid::Content.new(
+      type: 'text/html', 
+      value: mail.html_part&.body&.to_s || mail.body.to_s
+    )
     
-    mail_obj = Mail.new(from, subject, to, content)
+    mail_obj = SendGrid::Mail.new(from, subject, to, content)
     
+    # Enviar via API
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-    sg.client.mail._('send').post(request_body: mail_obj.to_json)
+    response = sg.client.mail._('send').post(request_body: mail_obj.to_json)
+    
+    # Log do resultado
+    Rails.logger.info "📧 Email enviado via SendGrid: #{response.status_code}"
+    
+    response
   end
 end
