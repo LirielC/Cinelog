@@ -85,11 +85,15 @@ Rails.application.configure do
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
       address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
-      port: ENV.fetch('SMTP_PORT', 587),
+      port: ENV.fetch('SMTP_PORT', 465),
       user_name: ENV['SMTP_USERNAME'],
       password: ENV['SMTP_PASSWORD'],
       authentication: :plain,
-      enable_starttls_auto: true
+      enable_starttls_auto: true,
+      ssl: true,
+      tls: true,
+      open_timeout: 10,
+      read_timeout: 10
     }
   else
     # Se não tiver SMTP configurado, não enviar emails (modo teste)
