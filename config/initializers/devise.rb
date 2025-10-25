@@ -25,8 +25,9 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   # IMPORTANTE: Use um email com domínio verificado no Resend
-  # Para testes, use: onboarding@resend.dev
-  config.mailer_sender = ENV.fetch('MAILER_FROM', 'onboarding@resend.dev')
+  # Para testes limitados, use: cinelogfilmes@gmail.com (apenas para este email)
+  # Para produção, verifique um domínio no Resend e use: noreply@seudominio.com
+  config.mailer_sender = ENV.fetch('MAILER_FROM', 'cinelogfilmes@gmail.com')
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
