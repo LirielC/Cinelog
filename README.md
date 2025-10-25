@@ -485,14 +485,15 @@ Este projeto é de código aberto. Sinta-se livre para usar e modificar conforme
 - **Authentication**: Devise
 - **Authorization**: Pundit
 - **Background Jobs**: ActiveJob + Sidekiq (produção)
-- **Email**: ActionMailer + SMTP
+- **Email**: ActionMailer + SendGrid API (produção) / SMTP (desenvolvimento)
 - **File Upload**: Active Storage
 - **Pagination**: Pagy
-- **HTTP Client**: Faraday (para TMDB API)
+- **HTTP Client**: Faraday (TMDB API), HTTParty
 - **Testing**: RSpec (configurado)
 - **CSS**: Custom CSS com inspiração Tailwind
 - **JavaScript**: Stimulus (Rails default)
 - **Deploy**: Pronto para Heroku, DigitalOcean, Render, etc.
+
 
 ---
 
