@@ -1,0 +1,38 @@
+name: cinelog-app
+region: atl
+
+services:
+  - name: web
+    github:
+      repo: LirielC/Cinelog
+      branch: master
+      deploy_on_push: true
+    
+    build_command: bundle install
+    run_command: bundle exec puma -C config/puma.rb
+    
+    # Comando que roda ANTES do deploy (migrations)
+    pre_deploy_command: bundle exec rails db:migrate
+    
+    environment_slug: ruby
+    
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    
+    http_port: 8080
+    
+    envs:
+      - key: RAILS_ENV
+        value: production
+      - key: RACK_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
+
+databases:
+  - name: db
+    engine: PG
+    version: "17"
+    size: dev-db
