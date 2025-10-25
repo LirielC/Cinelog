@@ -77,31 +77,26 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Devise mailer configuration - set your production host
-  config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'cinelog.com'), protocol: 'https' }
+  config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'cinelog-snoo.onrender.com'), protocol: 'https' }
 
-  # Email delivery via Resend API (funciona no Render sem portas SMTP bloqueadas)
-  if ENV['RESEND_API_KEY'].present?
+  # Email delivery via SMTP (Brevo/Sendinblue - funciona no Render!)
+  # Plano gratuito: 300 emails/dia
+  if ENV['BREVO_SMTP_KEY'].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: 'smtp-relay.brevo.com',
+      port: 587,
+      user_name: ENV['BREVO_SMTP_LOGIN'],
+      password: ENV['BREVO_SMTP_KEY'],
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
+  elsif ENV['RESEND_API_KEY'].present?
+    # Fallback: Resend (mas só funciona com domínio verificado)
     require Rails.root.join('lib', 'resend_delivery')
     config.action_mailer.delivery_method = ResendDelivery
   else
-    # Fallback: tentar SMTP se configurado
-    if ENV['SMTP_USERNAME'].present? && ENV['SMTP_PASSWORD'].present?
-      config.action_mailer.delivery_method = :smtp
-      config.action_mailer.smtp_settings = {
-        address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
-        port: ENV.fetch('SMTP_PORT', 465),
-        user_name: ENV['SMTP_USERNAME'],
-        password: ENV['SMTP_PASSWORD'],
-        authentication: :plain,
-        enable_starttls_auto: true,
-        ssl: true,
-        tls: true,
-        open_timeout: 10,
-        read_timeout: 10
-      }
-    else
-      # Se não tiver nada configurado, não enviar emails (modo teste)
-      config.action_mailer.delivery_method = :test
-    end
+    # Sem configuração de email
+    config.action_mailer.delivery_method = :test
   end
 end
