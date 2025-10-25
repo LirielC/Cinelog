@@ -83,7 +83,6 @@ Rails.application.configure do
   if ENV['RESEND_API_KEY'].present?
     require Rails.root.join('lib', 'resend_delivery')
     config.action_mailer.delivery_method = ResendDelivery
-    config.action_mailer.resend_delivery_settings = {}
   else
     # Fallback: tentar SMTP se configurado
     if ENV['SMTP_USERNAME'].present? && ENV['SMTP_PASSWORD'].present?
